@@ -6,6 +6,8 @@ import { NoPageFoundComponent } from './no-page-found/no-page-found.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProgressComponent } from './progress/progress.component';
 import { GraficaUnoComponent } from './grafica-uno/grafica-uno.component';
+import { PagesComponent } from './layouts/pages/pages.component';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -13,10 +15,12 @@ import { GraficaUnoComponent } from './grafica-uno/grafica-uno.component';
     NoPageFoundComponent,
     DashboardComponent,
     ProgressComponent,
-    GraficaUnoComponent
+    GraficaUnoComponent,
+    PagesComponent
   ],
   imports: [
     CommonModule,
+    SharedModule,
     PagesRoutingModule
   ]
 })
