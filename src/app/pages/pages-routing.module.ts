@@ -11,11 +11,10 @@ const routes: Routes = [
     // Layout principal para este módulo
     component: PagesComponent,
     children: [
-      { path: 'dashboard', component: DashboardComponent },
+      // misitio.com/pages -> apunta a misitio.com/dashboard  (coincidencia exacta)
+      { path: '', component: DashboardComponent, pathMatch: 'full' },
       { path: 'progress', component: ProgressComponent },
       { path: 'grafica-uno', component: GraficaUnoComponent },
-      // misitio.com/pages -> apunta a misitio.com/pages/dashboard  (coincidencia exacta)
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   }
 ];
