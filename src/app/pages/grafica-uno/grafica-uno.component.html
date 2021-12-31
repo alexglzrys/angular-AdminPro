@@ -2,19 +2,14 @@
 <!-- Start Page Content -->
 <!-- ============================================================== -->
 <div class="row">
-  <div class="col-6">
-    <div class="card">
-      <div class="card-body">
-        <div class="card-title">Ventas</div>
-        <!-- Estructura HTML para generar gráfica de dona -->
-        <div style="display: block">
-          <canvas baseChart
-            [data]="doughnutChartData"
-            [type]="doughnutChartType">
-          </canvas>
-        </div>
-      </div>
-    </div>
+  <div class="col-4">
+    <app-dona titulo="Ventas" [etiquetas]="labels_g1" [data]="data_g1" [colores]="color_g1"></app-dona>
+  </div>
+  <div class="col-4">
+    <app-dona titulo="Gastos" [etiquetas]="labels_g2" [data]="data_g2" [colores]="color_g2"></app-dona>
+  </div>
+  <div class="col-4">
+    <app-dona titulo="Aguinaldos" [etiquetas]="labels_g3" [data]="data_g3" [colores]="color_g3"></app-dona>
   </div>
 </div>
 <!-- ============================================================== -->
