@@ -1,6 +1,6 @@
 <div class="input-group">
   <span class="input-group-btn">
-    <button class="btn btn-primary" type="button" (click)="cambiarValor(-5)"><i class="fa fa-minus"></i></button>
+    <button [class]="btnClass" type="button" (click)="cambiarValor(-5)"><i class="fa fa-minus"></i></button>
   </span>
   <input type="number"
     class="form-control"
@@ -10,6 +10,6 @@
     step="1"
     placeholder="Product name">
   <span class="input-group-btn">
-    <button class="btn btn-primary" type="button" (click)="cambiarValor(5)"><i class="fa fa-plus"></i></button>
+    <button [ngClass]="btnClass" type="button" (click)="cambiarValor(5)"><i class="fa fa-plus"></i></button>
   </span>
 </div>

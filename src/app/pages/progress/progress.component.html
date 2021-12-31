@@ -39,14 +39,14 @@
     <div class="card">
       <div class="card-body">
         <!-- Enviar valor de entrada al componente y responder al evento que emite -->
-        <app-incrementador [valor]="progreso1" (valorActual)="progreso1 = $event"></app-incrementador>
+        <app-incrementador [valor]="progreso1" btnClass="btn-warning" (valorActual)="progreso1 = $event"></app-incrementador>
       </div>
     </div>
   </div>
   <div class="col-6">
     <div class="card">
       <div class="card-body">
-        <app-incrementador [valor]="progreso2" (valorActual)="progreso2 = $event"></app-incrementador>
+        <app-incrementador [valor]="progreso2" btnClass="btn-success" (valorActual)="progreso2 = $event"></app-incrementador>
       </div>
     </div>
   </div>
