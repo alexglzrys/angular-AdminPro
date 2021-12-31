@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SettingsService } from 'src/app/services/settings.service';
 
 @Component({
   selector: 'app-pages',
@@ -8,14 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PagesComponent implements OnInit {
 
-  elementLink: HTMLElement | null = document.getElementById('theme');
-
-  constructor() { }
+  constructor(private settingsService: SettingsService) { }
 
   ngOnInit(): void {
-    // Cargar el tema seleccionado por el usuario o aplicar uno por defecto para las páginas que implementen este Layout
-    const selectedTheme = localStorage.getItem('theme') || './assets/css/colors/default-dark.css';
-    this.elementLink?.setAttribute('href', selectedTheme)
+
   }
 
 }
