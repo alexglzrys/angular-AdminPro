@@ -8,13 +8,15 @@ import { GraficaUnoComponent } from './grafica-uno/grafica-uno.component';
 import { PagesComponent } from './layouts/pages/pages.component';
 import { SharedModule } from '../shared/shared.module';
 import { ComponentsModule } from '../components/components.module';
+import { AccountSettingsComponent } from './account-settings/account-settings.component';
 
 @NgModule({
   declarations: [
     DashboardComponent,
     ProgressComponent,
     GraficaUnoComponent,
-    PagesComponent
+    PagesComponent,
+    AccountSettingsComponent
   ],
   imports: [
     CommonModule,
