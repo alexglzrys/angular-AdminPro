@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-incrementador',
@@ -8,12 +8,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class IncrementadorComponent implements OnInit {
 
-  progreso: number = 50;
-
-  // Retornar valor del ancho en porcentaje
-  get getPorcentaje() {
-    return `${this.progreso}%`;
-  }
+  // Recibir valor de entrada desde el componente padre, si no hay valor, colocar uno por defecto
+  @Input('progreso_actual') progreso: number = 50;
 
   constructor() { }
 
