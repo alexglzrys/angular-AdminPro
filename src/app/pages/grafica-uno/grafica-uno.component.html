@@ -1,1 +1,22 @@
-<p>grafica-uno works!</p>
+<!-- ============================================================== -->
+<!-- Start Page Content -->
+<!-- ============================================================== -->
+<div class="row">
+  <div class="col-6">
+    <div class="card">
+      <div class="card-body">
+        <div class="card-title">Ventas</div>
+        <!-- Estructura HTML para generar gráfica de dona -->
+        <div style="display: block">
+          <canvas baseChart
+            [data]="doughnutChartData"
+            [type]="doughnutChartType">
+          </canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ============================================================== -->
+<!-- End PAge Content -->
+<!-- ============================================================== -->

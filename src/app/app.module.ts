@@ -3,15 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
-import { SharedModule } from './shared/shared.module';
-
 @NgModule({
   declarations: [
     AppComponent
   ],
-  imports: [
+  imports: [        // Listado de módulos que se usarán de forma global en la aplicación
     BrowserModule,
-    SharedModule,
     AppRoutingModule, // cargar el registro de rutas principales de la aplicación
   ],
   providers: [],

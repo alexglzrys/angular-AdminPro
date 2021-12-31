@@ -8,6 +8,7 @@ import { GraficaUnoComponent } from './grafica-uno/grafica-uno.component';
 import { PagesComponent } from './layouts/pages/pages.component';
 import { SharedModule } from '../shared/shared.module';
 import { ComponentsModule } from '../components/components.module';
+import { NgChartsModule } from 'ng2-charts';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { ComponentsModule } from '../components/components.module';
     CommonModule,
     SharedModule,
     ComponentsModule,
-    PagesRoutingModule
+    PagesRoutingModule,
+    NgChartsModule,     // Módulo de terceros para trabajar con gráficas (ng2-charts)
   ]
 })
 export class PagesModule { }
