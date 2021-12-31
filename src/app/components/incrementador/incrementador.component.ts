@@ -40,4 +40,17 @@ export class IncrementadorComponent implements OnInit {
     return this.progreso
   }
 
+  // Controlar el valor actual en la barra de progreso cuando el valor del input cambia (manipular el valor directamente desde el input)
+  changeValueProgress(nuevoValor: number) {
+    if (nuevoValor >= 100) {
+      nuevoValor = 100;
+    } else if (nuevoValor <= 0) {
+      nuevoValor = 0
+    } else {
+      nuevoValor = nuevoValor;
+    }
+
+    this.valorActual.emit(nuevoValor);
+  }
+
 }

@@ -2,9 +2,15 @@
   <span class="input-group-btn">
     <button [class]="btnClass" type="button" (click)="cambiarValor(-5)"><i class="fa fa-minus"></i></button>
   </span>
+  <!--
+    ngModelChange es un evento que se emite cuando el valor del input cambia
+    ngClass permite asignar una clase (propiedad) si la condición se cumple (value)
+  -->
   <input type="number"
     class="form-control"
+    [ngClass]="{'is-invalid': progreso > 100 || progreso < 0}"
     [(ngModel)]="progreso"
+    (ngModelChange)="changeValueProgress($event)"
     min="0"
     max="100"
     step="1"
