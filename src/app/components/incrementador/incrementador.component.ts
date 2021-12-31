@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+
 
 @Component({
   selector: 'app-incrementador',
@@ -9,7 +10,10 @@ import { Component, Input, OnInit } from '@angular/core';
 export class IncrementadorComponent implements OnInit {
 
   // Recibir valor de entrada desde el componente padre, si no hay valor, colocar uno por defecto
-  @Input('progreso_actual') progreso: number = 50;
+  @Input('valor') progreso: number = 50;
+
+  // Emitir un evento personalizado al padre para enviarle un valor desde el componente hijo
+  @Output() valorActual: EventEmitter<number> = new EventEmitter();
 
   constructor() { }
 
@@ -19,14 +23,18 @@ export class IncrementadorComponent implements OnInit {
   // Controlar el valor actual en la barra de progreso (evitar que se desborde)
   cambiarValor(valor: number): number {
     if (this.progreso >= 100 && valor >= 0 ) {
-      return this.progreso = 100
+      this.valorActual.emit(100);
+      return this.progreso = 100;
     }
 
     if (this.progreso <= 0 && valor <= 0 ) {
-      return this.progreso = 0
+      this.valorActual.emit(0);
+      return this.progreso = 0;
     }
 
-    return this.progreso += valor;
+    this.progreso += valor;
+    this.valorActual.emit(this.progreso)
+    return this.progreso
   }
 
 }

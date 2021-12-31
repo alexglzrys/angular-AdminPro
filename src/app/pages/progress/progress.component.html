@@ -14,7 +14,7 @@
             aria-valuemin="0"
             aria-valuemax="100"
             style="height:10px;"
-            [style.width]="getPorcentaje">
+            [style.width]="getPorcentaje1">
               <span class="sr-only">85% Complete</span>
             </div>
         </div>
@@ -26,7 +26,7 @@
             aria-valuemin="0"
             aria-valuemax="100"
             style="height:10px;"
-            [style.width]="getPorcentaje">
+            [style.width]="getPorcentaje2">
               <span class="sr-only">85% Complete</span>
             </div>
         </div>
@@ -38,14 +38,15 @@
   <div class="col-6">
     <div class="card">
       <div class="card-body">
-        <app-incrementador [progreso_actual]="15"></app-incrementador>
+        <!-- Enviar valor de entrada al componente y responder al evento que emite -->
+        <app-incrementador [valor]="progreso1" (valorActual)="progreso1 = $event"></app-incrementador>
       </div>
     </div>
   </div>
   <div class="col-6">
     <div class="card">
       <div class="card-body">
-        <app-incrementador></app-incrementador>
+        <app-incrementador [valor]="progreso2" (valorActual)="progreso2 = $event"></app-incrementador>
       </div>
     </div>
   </div>

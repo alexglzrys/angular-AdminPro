@@ -7,11 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProgressComponent implements OnInit {
 
-  progreso: number = 50;
+  progreso1: number = 25;
+  progreso2: number = 45;
 
   // Retornar valor del ancho en porcentaje
-  get getPorcentaje() {
-    return `${this.progreso}%`;
+  get getPorcentaje1() {
+    return `${this.progreso1}%`;
+  }
+
+  get getPorcentaje2() {
+    return `${this.progreso2}%`;
   }
 
   constructor() { }
