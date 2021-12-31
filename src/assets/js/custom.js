@@ -4,7 +4,9 @@ Author: Wrappixel
 Email: niravjoshi87@gmail.com
 File: js
 */
-$(function() {
+
+const customInitFunction = () => {
+  $(function() {
     "use strict";
     $(function() {
         $(".preloader").fadeOut();
@@ -154,4 +156,9 @@ $(function() {
         $(this).closest('.card').removeClass().slideUp('fast');
     });
 
-});
+  });
+}
+
+// Invocar la función que inicializa todos los plugins de mi tema
+customInitFunction();
+
