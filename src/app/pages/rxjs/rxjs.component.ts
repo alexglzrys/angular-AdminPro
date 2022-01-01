@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { retry } from "rxjs/operators";
 
 @Component({
   selector: 'app-rxjs',
@@ -10,9 +11,10 @@ import { Observable } from 'rxjs';
 export class RxjsComponent implements OnInit {
 
   constructor() {
+    let i = -1;
+
     // Generar el cuerpo de un Observable
     const obs$ = new Observable(observer => {
-      let i = -1;
 
       const intervalo = setInterval(() => {
         console.log('tick');
@@ -30,9 +32,10 @@ export class RxjsComponent implements OnInit {
           observer.complete();
         }
 
-        // Un Observable puede lanzar un error
+        // Un Observable puede lanzar un error, en este caso se termina de forma abrupta
         if (i === 2) {
-          clearInterval(intervalo);
+          i = -1;
+          console.warn('Upss error...')
           observer.error('Lo sentimos, detectamos un error interno');
         }
 
@@ -40,11 +43,15 @@ export class RxjsComponent implements OnInit {
     })
 
     // Suscribirse al Observable para que comience a trabajar, de lo contrario no hace nada
-    obs$.subscribe(
+    obs$.pipe(
+      // Operador para reintentar en caso de error, si no hay parámetro se reintenta N veces
+      retry(1)
+    ).subscribe(
       data => console.log('Data: ', data),
       err  => console.error('Error', err),
       ()   => console.info('Completado')
     );
+
   }
 
   ngOnInit(): void {
