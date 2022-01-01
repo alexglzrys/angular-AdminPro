@@ -15,12 +15,13 @@ const routes: Routes = [
     component: PagesComponent,
     children: [
       // misitio.com/pages -> apunta a misitio.com/dashboard  (coincidencia exacta)
-      { path: '', component: DashboardComponent, pathMatch: 'full' },
-      { path: 'progress', component: ProgressComponent },
-      { path: 'grafica-uno', component: GraficaUnoComponent },
-      { path: 'account-settings', component: AccountSettingsComponent },
-      { path: 'promesas', component: PromesasComponent },
-      { path: 'rxjs', component: RxjsComponent },
+      // data: permite al desarrollador mandar datos adicionales al componente de ruta a través de ActivatedRouter
+      { path: '', component: DashboardComponent, pathMatch: 'full', data: { title: 'Dashboard' } },
+      { path: 'progress', component: ProgressComponent, data: { title: 'Progress' }  },
+      { path: 'grafica-uno', component: GraficaUnoComponent, data: { title: 'Gráfica' }  },
+      { path: 'account-settings', component: AccountSettingsComponent, data: { title: 'Ajustes Generales' }  },
+      { path: 'promesas', component: PromesasComponent, data: { title: 'Promesas' }  },
+      { path: 'rxjs', component: RxjsComponent, data: { title: 'RxJS' }  },
     ]
   }
 ];
