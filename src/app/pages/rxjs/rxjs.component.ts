@@ -11,7 +11,7 @@ import { retry } from "rxjs/operators";
 export class RxjsComponent implements OnInit {
 
   constructor() {
-    let i = -1;
+    /*let i = -1;
 
     // Generar el cuerpo de un Observable
     const obs$ = new Observable(observer => {
@@ -50,11 +50,44 @@ export class RxjsComponent implements OnInit {
       data => console.log('Data: ', data),
       err  => console.error('Error', err),
       ()   => console.info('Completado')
-    );
+    );*/
 
+    // Generalmente en Angular nos vamos a conectar a servicios que retornen aobservables (que no son mas que funciones)
+    this.retonrnaObservable()
+        .pipe(retry(1))
+        .subscribe(
+          dat => console.log('Data: ', dat),
+          err => console.error('Error: ', err),
+          ()  => console.info('Completado')
+        );
   }
 
   ngOnInit(): void {
+  }
+
+  // Una función que retorna un Observable de tipo numérico
+  retonrnaObservable(): Observable<number> {
+    let i = -1;
+    return new Observable<number>(observer => {
+
+      const intervalo = setInterval(() => {
+        console.log('tick');
+        i++;
+        observer.next(i);
+
+        if (i === 4) {
+          clearInterval(intervalo);
+          observer.complete();
+        }
+
+        if (i === 2) {
+          i = -1;
+          console.warn('Upss error...')
+          observer.error('Lo sentimos, detectamos un error interno');
+        }
+
+      }, 1000);
+    })
   }
 
 }
