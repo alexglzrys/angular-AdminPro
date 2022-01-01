@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { retry } from "rxjs/operators";
+import { interval, Observable } from 'rxjs';
+import { map, retry, take } from "rxjs/operators";
 
 @Component({
   selector: 'app-rxjs',
@@ -53,13 +53,18 @@ export class RxjsComponent implements OnInit {
     );*/
 
     // Generalmente en Angular nos vamos a conectar a servicios que retornen aobservables (que no son mas que funciones)
-    this.retonrnaObservable()
+    /*this.retonrnaObservable()
         .pipe(retry(1))
         .subscribe(
           dat => console.log('Data: ', dat),
           err => console.error('Error: ', err),
           ()  => console.info('Completado')
-        );
+        );*/
+
+
+
+
+    this.retornaIntervaloRxJS().subscribe(console.log);
   }
 
   ngOnInit(): void {
@@ -88,6 +93,16 @@ export class RxjsComponent implements OnInit {
 
       }, 1000);
     })
+  }
+
+  retornaIntervaloRxJS(): Observable<number> {
+    // RxJS permite crear Observables que emite secuencias de números cada cierto intervalo de tiempo
+    return interval(1000).pipe(
+      // Operador que toma una cierta cantidad de valores emitidos por el Observable y lo completa
+      take(4),
+      // Operador para mapear o transoformar el flujo de información (permite descartar información inecesaria que puede venir como respuesta de una API)
+      map(valor => valor + 1)
+    )
   }
 
 }
