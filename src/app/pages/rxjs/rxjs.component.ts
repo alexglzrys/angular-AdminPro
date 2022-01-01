@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { interval, Observable } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { interval, Observable, Subscription } from 'rxjs';
 import { filter, map, retry, take } from "rxjs/operators";
 
 @Component({
@@ -8,7 +8,9 @@ import { filter, map, retry, take } from "rxjs/operators";
   styles: [
   ]
 })
-export class RxjsComponent implements OnInit {
+export class RxjsComponent implements OnInit, OnDestroy {
+
+  private miSuscripcion!: Subscription;
 
   constructor() {
     /*let i = -1;
@@ -64,7 +66,15 @@ export class RxjsComponent implements OnInit {
 
 
 
-    this.retornaIntervaloRxJS().subscribe(console.log);
+    // this.retornaIntervaloRxJS().subscribe(console.log);
+
+    // En Observables infinitos, es importante implementar un mecanismo para desuscribirse, ya que de lo contrario se generan fujas de memoria que pueden ralentizar nuestro ordenador
+    this.miSuscripcion = this.retornaIntervaloRxJS().subscribe(console.log);
+  }
+
+  ngOnDestroy(): void {
+    // Desuscribirse de cuaquier Observable infinito suscrito en este componente antes de salir
+    this.miSuscripcion.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -99,7 +109,7 @@ export class RxjsComponent implements OnInit {
     // RxJS permite crear Observables que emite secuencias de números cada cierto intervalo de tiempo
     return interval(1000).pipe(
       // Operador que toma una cierta cantidad de valores emitidos por el Observable y lo completa
-      take(10),
+      // take(10),
       // Operador para mapear o transoformar el flujo de información (permite descartar información inecesaria que puede venir como respuesta de una API)
       map(valor => valor + 1),
       // Operador para filtrar información (me interesa conservar números pares que estén presentes en el flujo)
