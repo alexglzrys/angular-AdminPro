@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { interval, Observable } from 'rxjs';
-import { map, retry, take } from "rxjs/operators";
+import { filter, map, retry, take } from "rxjs/operators";
 
 @Component({
   selector: 'app-rxjs',
@@ -99,9 +99,11 @@ export class RxjsComponent implements OnInit {
     // RxJS permite crear Observables que emite secuencias de números cada cierto intervalo de tiempo
     return interval(1000).pipe(
       // Operador que toma una cierta cantidad de valores emitidos por el Observable y lo completa
-      take(4),
+      take(10),
       // Operador para mapear o transoformar el flujo de información (permite descartar información inecesaria que puede venir como respuesta de una API)
-      map(valor => valor + 1)
+      map(valor => valor + 1),
+      // Operador para filtrar información (me interesa conservar números pares que estén presentes en el flujo)
+      filter((valor, index) => valor % 2 === 0)
     )
   }
 
