@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivationEnd, Data, Event, Router } from '@angular/router';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { ActivatedRoute, ActivationEnd, Data, Event, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 @Component({
@@ -8,12 +9,26 @@ import { filter, map } from 'rxjs/operators';
   styles: [
   ]
 })
-export class BreadcrumbsComponent implements OnInit {
+export class BreadcrumbsComponent implements OnInit, OnDestroy {
 
   title: string = '';
+  miObservableTituloRuta$!: Subscription;
 
-  constructor(private router: Router) {
-    this.getDataAdicionalRuta()
+  constructor(private router: Router,
+              private activatedRoute: ActivatedRoute) {
+    this.miObservableTituloRuta$ = this.getDataAdicionalRuta().subscribe((data: Data) => {
+      // Asignar titulo que viaja como data adicional en la ruta
+      this.title = data.title
+      document.title = `Angular AdminPro - ${this.title}`;
+
+      // Otra forma de hacer lo mismo pero más sintetizado
+      this.otraFormaRecuperarDataAdicionalRuta()
+    });
+  }
+
+  ngOnDestroy(): void {
+    // Este observable se ejecuta de forma infinita, por tanto, por buenas prácticas debemos destruirlo cuando el componente deja de existir
+    this.miObservableTituloRuta$.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -22,7 +37,7 @@ export class BreadcrumbsComponent implements OnInit {
 
   getDataAdicionalRuta() {
     // Suscribirme a los eventos del router
-    this.router.events
+    return this.router.events
         .pipe(
           // Al entrar a una nueva ruta suceden muchos eventos, solo me interesa el ActivationEnd
           filter((event: any) => event instanceof ActivationEnd ),
@@ -30,12 +45,14 @@ export class BreadcrumbsComponent implements OnInit {
           filter((event: ActivationEnd) => event.snapshot.firstChild === null ),
           // De ese evento solo me interesa obtener su data
           map((event: ActivationEnd) => event.snapshot.data)
-        )
-        .subscribe((data: Data) => {
-          // Asignar titulo que viaja como data adicional en la ruta
-          this.title = data.title
-          document.title = `Angular AdminPro - ${this.title}`;
-        })
+        );
+  }
+
+  otraFormaRecuperarDataAdicionalRuta() {
+    // El router principal es el que se obtiene por defecto, para ello debemos acceder a sus hijos (router-outlet anidados)
+    this.activatedRoute.url.subscribe(() => {
+      console.log(this.activatedRoute.snapshot.firstChild?.data);
+    })
   }
 
 }
