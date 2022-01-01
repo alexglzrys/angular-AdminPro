@@ -84,7 +84,7 @@ const customInitFunction = () => {
     // ==============================================================
     // Auto select left navbar
     // ==============================================================
-    $(function() {
+    /*$(function() {
         var url = window.location;
         var element = $('ul#sidebarnav a').filter(function() {
             return this.href == url;
@@ -97,7 +97,7 @@ const customInitFunction = () => {
             }
         }
 
-    });
+    });*/
     // ==============================================================
     //tooltip
     // ==============================================================

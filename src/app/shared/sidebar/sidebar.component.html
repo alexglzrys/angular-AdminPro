@@ -29,7 +29,8 @@
                   <ul aria-expanded="false" class="collapse">
                     <!-- Elementos de submenu -->
                     <li *ngFor="let subitem of item.submenu">
-                      <a [routerLink]="subitem.url">{{ subitem.title }} </a>
+                      <!-- Resaltar links activos que coincidan exactamente con la URL -->
+                      <a [routerLink]="subitem.url" routerLinkActive="active" [routerLinkActiveOptions]="{'exact': true}">{{ subitem.title }} </a>
                     </li>
                   </ul>
               </li>
