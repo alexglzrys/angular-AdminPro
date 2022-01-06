@@ -38,6 +38,16 @@
                       </div>
                   </div>
               </div>
+
+              <!-- Mostrar errores -->
+              <div class="row">
+                <div class="col text-danger">
+                  <p *ngIf="campoNoValido('nombre')">El nombre es obligatorio</p>
+                  <p *ngIf="campoNoValido('email')">El email es obligatorio y tiene que ser válido</p>
+                  <p *ngIf="noAceptaTerminos()">Debe aceptar los términos y condiciones</p>
+                </div>
+              </div>
+
               <div class="form-group text-center m-t-20">
                   <div class="col-xs-12">
                       <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">Sign Up</button>

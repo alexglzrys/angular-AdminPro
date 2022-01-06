@@ -17,13 +17,35 @@ export class RegisterComponent implements OnInit {
     terminos: [false, Validators.required]
   });
 
+  formSubmitted: boolean = false;
+
   constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
   }
 
   registrarUsuario() {
+    this.formSubmitted = true;
     console.log(this.registerForm.value);
+
+    // Proceder a registrar usuario
+    if (this.registerForm.valid) {
+      console.log('Posteando formulario con datos correctos')
+    } else {
+      console.log('Formulario incorrecto')
+    }
+  }
+
+  campoNoValido(campo: string): boolean {
+    if (this.registerForm.get(campo)?.invalid && this.formSubmitted) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  noAceptaTerminos(): boolean {
+    return !this.registerForm.get('terminos')?.value && this.formSubmitted;
   }
 
 }
