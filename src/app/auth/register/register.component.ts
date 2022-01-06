@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import Swal from 'sweetalert2'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 
@@ -45,8 +46,8 @@ export class RegisterComponent implements OnInit {
       },
       err => {
         // La información de los errores se atrapan en la propiedad error
-        console.log(err);
-        console.log(err.error.msg);
+        Swal.fire('Upss', err.error.msg, 'error');
+        //console.log(err);
       }
     );
   }
