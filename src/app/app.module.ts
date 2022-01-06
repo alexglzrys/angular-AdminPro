@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
@@ -9,6 +10,7 @@ import { AppComponent } from './app.component';
   ],
   imports: [        // Listado de módulos que se usarán de forma global en la aplicación
     BrowserModule,
+    HttpClientModule,     // Habilitar peticiones HTTP
     AppRoutingModule, // cargar el registro de rutas principales de la aplicación
   ],
   providers: [],

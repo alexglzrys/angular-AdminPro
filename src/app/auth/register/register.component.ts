@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UsuariosService } from 'src/app/services/usuarios.service';
 
 @Component({
   selector: 'app-register',
@@ -22,7 +23,8 @@ export class RegisterComponent implements OnInit {
 
   formSubmitted: boolean = false;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder,
+              private usuariosService: UsuariosService) { }
 
   ngOnInit(): void {
   }
@@ -32,11 +34,21 @@ export class RegisterComponent implements OnInit {
     console.log(this.registerForm.value);
 
     // Proceder a registrar usuario
-    if (this.registerForm.valid) {
-      console.log('Posteando formulario con datos correctos')
-    } else {
-      console.log('Formulario incorrecto')
+    if (this.registerForm.invalid) {
+      return;
     }
+
+    // Registrar usuario con la ayuda del servicio
+    this.usuariosService.registrarUsuario(this.registerForm.value).subscribe(
+      res => {
+        console.log(res);
+      },
+      err => {
+        // La información de los errores se atrapan en la propiedad error
+        console.log(err);
+        console.log(err.error.msg);
+      }
+    );
   }
 
   // Funciones para mostrar mensajes de validación
