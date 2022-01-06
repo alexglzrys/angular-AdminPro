@@ -13,7 +13,8 @@ export class LoginComponent implements OnInit {
 
   // Construr formulario reactivo
   public formLogin: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
+    // Colocamos su email si el usuario desea que se le recuerde
+    email: [localStorage.getItem('email') || '', [Validators.required, Validators.email]],
     password: ['', Validators.required],
     rememberme: [false]
   });
@@ -31,6 +32,14 @@ export class LoginComponent implements OnInit {
     if (this.formLogin.valid) {
       this.usuariosServices.login(this.formLogin.value).subscribe(res => {
         console.log(res);
+        // Verificar si el usuario desea que se le recuerde
+        if (this.formLogin.get('rememberme')?.value) {
+          // Almacenar su email en LocalStorage
+          localStorage.setItem('email', this.formLogin.get('email')?.value);
+        } else {
+          // No desea que sigamos recordandolo
+          localStorage.removeItem('email');
+        }
       }, err => {
         Swal.fire('Upss!', err.error.msg, 'error');
         console.log(err);
