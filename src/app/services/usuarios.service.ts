@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { LoginForm } from '../interfaces/login-form';
 import { RegisterUserForm } from '../interfaces/register-user-form';
 
 const BASE_URL = environment.base_url;
@@ -15,6 +16,11 @@ export class UsuariosService {
 
   registrarUsuario(formData: RegisterUserForm): Observable<any> {
     const URL = `${ BASE_URL }/usuarios`;
+    return this.http.post(URL, formData);
+  }
+
+  login(formData: LoginForm): Observable<any> {
+    const URL = `${ BASE_URL }/login`;
     return this.http.post(URL, formData);
   }
 
