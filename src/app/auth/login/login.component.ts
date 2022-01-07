@@ -4,6 +4,9 @@ import { Router } from '@angular/router';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import Swal from 'sweetalert2';
 
+// Indicar al builder que esta propiedad se encuentra declarada de forma global por algun script declarado en el index de la aplicación
+declare const gapi: any;
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -24,6 +27,8 @@ export class LoginComponent implements OnInit {
               private usuariosServices: UsuariosService) { }
 
   ngOnInit(): void {
+    // Llamar a la función encargada de renderizar el botón de Google Sign In
+    this.renderButton();
   }
 
   login() {
@@ -46,6 +51,30 @@ export class LoginComponent implements OnInit {
       })
     }
     // this.router.navigate(['/dashboard']);
+  }
+
+  // Google Sign In
+  // https://developers.google.com/identity/sign-in/web/build-button
+  onSuccess(googleUser: any) {
+    // Obtener token de Google
+    const id_token = googleUser.getAuthResponse().id_token;
+    console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+    console.log(id_token);
+  }
+  onFailure(error: any) {
+    console.log(error);
+  }
+  renderButton() {
+    // gapi esta declarado a nivel global en el script Platform.js de Google Sign In
+    gapi.signin2.render('my-signin2', {
+      'scope': 'profile email',
+      'width': 240,
+      'height': 50,
+      'longtitle': true,
+      'theme': 'dark',
+      'onsuccess': this.onSuccess,
+      'onfailure': this.onFailure
+    });
   }
 
 }
