@@ -26,6 +26,15 @@ export class UsuariosService {
                 this.startApp();
               }
 
+  // GETTERS utilitarios
+  get uid(): string {
+    return this.usuario.uid!;
+  }
+
+  get token(): string {
+    return localStorage.getItem('token') || '';
+  }
+
   registrarUsuario(formData: RegisterUserForm): Observable<any> {
     const URL = `${ BASE_URL }/usuarios`;
     return this.http.post(URL, formData).pipe(
@@ -36,6 +45,21 @@ export class UsuariosService {
       })
       // Continuar con el flujo;
     );
+  }
+
+  actualizarUsuario(profile: { nombre: string, email: string }) {
+    // Construir data (se requiere el nombre, email, role)
+    const profileData = {
+      ...profile,
+      role: this.usuario.role
+    }
+    // Generar URL
+    const URL = `${ BASE_URL }/usuarios/${ this.uid }`;
+    return this.http.put(URL, profileData, {
+      headers: {
+        'x-token': this.token
+      }
+    });
   }
 
   login(formData: LoginForm): Observable<any> {
@@ -57,11 +81,11 @@ export class UsuariosService {
 
   // Verificar si el token actual es válido
   validarToken(): Observable<boolean> {
-    const token = localStorage.getItem('token') || '';
+    //const token = localStorage.getItem('token') || '';
     const URL = `${ BASE_URL }/login/renew`;
     return this.http.get(URL, {
       headers: {
-        "x-token": token
+        "x-token": this.token
       }
     }).pipe(
       tap((res: any) => {
