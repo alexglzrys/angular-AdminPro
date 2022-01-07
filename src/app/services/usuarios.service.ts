@@ -15,7 +15,7 @@ const BASE_URL = environment.base_url;
 })
 export class UsuariosService {
 
-  private auth2!: any;
+  public auth2!: any;
 
   constructor(private http: HttpClient,
               private rotuer: Router,
@@ -93,16 +93,23 @@ export class UsuariosService {
   }
 
   // Función que inicializa el Google Sign in API
-  startApp() {
-    gapi.load('auth2', () => {
-      // Retrieve the singleton for the GoogleAuth library and set up the client.
-      this.auth2 = gapi.auth2.init({
-        client_id: '689500073926-bmqaoupnfdigj6hn3k58mlth5v98b32s.apps.googleusercontent.com',
-        cookiepolicy: 'single_host_origin',
-        // Request scopes in addition to 'profile' and 'email'
-        //scope: 'additional_scope'
+  startApp(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      // gapi esta declarado a nivel global en el script Platform.js de Google Sign In
+      gapi.load('auth2', () => {
+        // Retrieve the singleton for the GoogleAuth library and set up the client.
+        this.auth2 = gapi.auth2.init({
+          client_id: '689500073926-bmqaoupnfdigj6hn3k58mlth5v98b32s.apps.googleusercontent.com',
+          cookiepolicy: 'single_host_origin',
+          // Request scopes in addition to 'profile' and 'email'
+          //scope: 'additional_scope'
+        });
+
+        // Resolver promesa, el gAPI ya se inicializó
+        resolve();
       });
-    });
+    })
+
   };
 
 }

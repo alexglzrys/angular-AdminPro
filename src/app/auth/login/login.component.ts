@@ -68,21 +68,14 @@ export class LoginComponent implements OnInit {
       'theme': 'dark',
       // No se definen los callback ya que se está trabajando bajo una filosofía de clases en Angular, (se perdería la referencia a this dentro de la definición de esos callbacks)
     });
+    // Inicializar el API de GOOGLE SIGN IN
     this.startApp();
   }
 
-  startApp() {
-    // gapi esta declarado a nivel global en el script Platform.js de Google Sign In
-    gapi.load('auth2', () => {
-      // Retrieve the singleton for the GoogleAuth library and set up the client.
-      this.auth2 = gapi.auth2.init({
-        client_id: '689500073926-bmqaoupnfdigj6hn3k58mlth5v98b32s.apps.googleusercontent.com',
-        cookiepolicy: 'single_host_origin',
-        // Request scopes in addition to 'profile' and 'email'
-        //scope: 'additional_scope'
-      });
-      this.attachSignin(document.getElementById('my-signin2'));
-    });
+  async startApp() {
+    await this.usuariosServices.startApp();
+    this.auth2 = this.usuariosServices.auth2;
+    this.attachSignin(document.getElementById('my-signin2'));
   };
 
   attachSignin(element: any) {
