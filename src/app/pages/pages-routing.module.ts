@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from '../guards/auth.guard';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { GraficaUnoComponent } from './grafica-uno/grafica-uno.component';
@@ -13,6 +14,9 @@ const routes: Routes = [
     path: '',
     // Layout principal para este módulo
     component: PagesComponent,
+    // Proteger todas estas rutas
+    canActivate: [AuthGuard],
+    canLoad: [AuthGuard],
     children: [
       // misitio.com/pages -> apunta a misitio.com/dashboard  (coincidencia exacta)
       // data: permite al desarrollador mandar datos adicionales al componente de ruta a través de ActivatedRouter

@@ -46,6 +46,8 @@ export class LoginComponent implements OnInit {
           // No desea que sigamos recordandolo
           localStorage.removeItem('email');
         }
+        // Redireccionar al usuario a la sección de Dashboard
+        this.router.navigateByUrl('/');
       }, err => {
         Swal.fire('Upss!', err.error.msg, 'error');
         console.log(err);
@@ -92,6 +94,8 @@ export class LoginComponent implements OnInit {
             console.log(res);
             // Este token lo guardamos en localStorage
             localStorage.setItem('token', res.token)
+            // Redireccionar al usuario a la sección de Dashboard
+            this.router.navigateByUrl('/');
           }, err => {
             console.log(err);
           })
