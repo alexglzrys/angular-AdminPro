@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Usuario } from 'src/app/models/usuario.model';
 import { SidebarService } from 'src/app/services/sidebar.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 
@@ -13,12 +14,15 @@ declare let $: any;
 export class SidebarComponent implements OnInit, AfterViewInit {
 
   menuItems!: any[];
+  public usuario!: Usuario;
 
   constructor(private sidebarService: SidebarService,
               private usuariosService: UsuariosService) { }
 
   ngOnInit(): void {
     this.menuItems = this.sidebarService.menu;
+    // Recuperar información del usuario logeado
+    this.usuario = this.usuariosService.usuario;
   }
 
   ngAfterViewInit(): void {

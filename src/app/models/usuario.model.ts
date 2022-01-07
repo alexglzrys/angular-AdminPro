@@ -5,19 +5,35 @@
  * Siempre las propiedades opcionales se dejan al final y se debe especificar el ? de TS
  */
 
+import { environment } from "src/environments/environment";
+
+const API_URL = environment.base_url;
 export class Usuario {
 
   constructor(
-    private nombre: string,
-    private email: string,
-    private password?: string,
-    private role?: string,
-    private img?: string,
-    private uid?: string,
-    private google?: boolean
+    public nombre: string,
+    public email: string,
+    public password?: string,
+    public role?: string,
+    public img?: string,
+    public uid?: string,
+    public google?: boolean
   ) { }
 
   public print(): string {
     return `${this.nombre} - ${this.email}`;
+  }
+
+  get getImageUrl(): string {
+    // Imagen de red social, ya contiene toda la ruta
+    if (this.google) {
+      return this.img!;
+    }
+    // Imagen de perfil de usuario, es necesario componer toda la ruta
+    if (this.img) {
+      return `${ API_URL }/uploads/usuarios/${this.img}`;
+    } else {
+      return `${ API_URL }/uploads/usuarios/no-image.jpg`;
+    }
   }
 }
