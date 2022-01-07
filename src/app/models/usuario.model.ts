@@ -17,4 +17,7 @@ export class Usuario {
     private google?: boolean
   ) { }
 
+  public print(): string {
+    return `${this.nombre} - ${this.email}`;
+  }
 }

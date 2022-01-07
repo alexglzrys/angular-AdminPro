@@ -6,6 +6,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { LoginForm } from '../interfaces/login-form';
 import { RegisterUserForm } from '../interfaces/register-user-form';
+import { Usuario } from '../models/usuario.model';
 
 declare const gapi: any;
 const BASE_URL = environment.base_url;
@@ -16,6 +17,7 @@ const BASE_URL = environment.base_url;
 export class UsuariosService {
 
   public auth2!: any;
+  public usuario!: Usuario;
 
   constructor(private http: HttpClient,
               private rotuer: Router,
@@ -66,6 +68,11 @@ export class UsuariosService {
         // Efecto secundario
         // Guardar el posible token regenerado en localStorage
         localStorage.setItem('token', res.newToken);
+        // Crear una instancia del usuario logeado
+        const { nombre, email, password, role, img, uid, google } = res.usuario;
+        this.usuario = new Usuario(nombre, email, '', role, img, uid, google);
+        // consultar información del usuario logeado
+        console.log(this.usuario.print());
       }),
       map((res:any) => {
         // Transformar la respuesta en un booleano
