@@ -22,12 +22,13 @@ export class LoginComponent implements OnInit {
     rememberme: [false]
   });
 
+  auth2!: any;
+
   constructor(private router: Router,
               private fb: FormBuilder,
               private usuariosServices: UsuariosService) { }
 
   ngOnInit(): void {
-    // Llamar a la función encargada de renderizar el botón de Google Sign In
     this.renderButton();
   }
 
@@ -55,26 +56,48 @@ export class LoginComponent implements OnInit {
 
   // Google Sign In
   // https://developers.google.com/identity/sign-in/web/build-button
-  onSuccess(googleUser: any) {
-    // Obtener token de Google
-    const id_token = googleUser.getAuthResponse().id_token;
-    console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-    console.log(id_token);
-  }
-  onFailure(error: any) {
-    console.log(error);
-  }
   renderButton() {
-    // gapi esta declarado a nivel global en el script Platform.js de Google Sign In
     gapi.signin2.render('my-signin2', {
       'scope': 'profile email',
       'width': 240,
       'height': 50,
       'longtitle': true,
       'theme': 'dark',
-      'onsuccess': this.onSuccess,
-      'onfailure': this.onFailure
+      // No se definen los callback ya que se está trabajando bajo una filosofía de clases en Angular, (se perdería la referencia a this dentro de la definición de esos callbacks)
     });
+    this.startApp();
+  }
+
+  startApp() {
+    // gapi esta declarado a nivel global en el script Platform.js de Google Sign In
+    gapi.load('auth2', () => {
+      // Retrieve the singleton for the GoogleAuth library and set up the client.
+      this.auth2 = gapi.auth2.init({
+        client_id: '689500073926-bmqaoupnfdigj6hn3k58mlth5v98b32s.apps.googleusercontent.com',
+        cookiepolicy: 'single_host_origin',
+        // Request scopes in addition to 'profile' and 'email'
+        //scope: 'additional_scope'
+      });
+      this.attachSignin(document.getElementById('my-signin2'));
+    });
+  };
+
+  attachSignin(element: any) {
+    this.auth2.attachClickHandler(element, {},
+        (googleUser: any) => {
+          const id_token = googleUser.getAuthResponse().id_token;
+          // Si todo es correcto hacemos login en nuestro backend con el token generado por Google
+          // Si el token es correcto, el backend nos retorna un token (propio) de acceso a el app
+          this.usuariosServices.loginGoogle(id_token).subscribe(res => {
+            console.log(res);
+            // Este token lo guardamos en localStorage
+            localStorage.setItem('token', res.token)
+          }, err => {
+            console.log(err);
+          })
+        }, (error: any) => {
+          alert(JSON.stringify(error, undefined, 2));
+        });
   }
 
 }

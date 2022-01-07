@@ -39,4 +39,9 @@ export class UsuariosService {
     );
   }
 
+  loginGoogle(token: string): Observable<any> {
+    const URL = `${ BASE_URL }/login/google`;
+    return this.http.post(URL, { token });
+  }
+
 }
