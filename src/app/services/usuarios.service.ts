@@ -1,11 +1,13 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { LoginForm } from '../interfaces/login-form';
 import { RegisterUserForm } from '../interfaces/register-user-form';
 
+declare const gapi: any;
 const BASE_URL = environment.base_url;
 
 @Injectable({
@@ -13,7 +15,14 @@ const BASE_URL = environment.base_url;
 })
 export class UsuariosService {
 
-  constructor(private http: HttpClient) { }
+  private auth2!: any;
+
+  constructor(private http: HttpClient,
+              private rotuer: Router,
+              private ngZone: NgZone) {
+                // Iniciar el Google Sign In API
+                this.startApp();
+              }
 
   registrarUsuario(formData: RegisterUserForm): Observable<any> {
     const URL = `${ BASE_URL }/usuarios`;
@@ -69,5 +78,31 @@ export class UsuariosService {
       })
     );
   }
+
+  logout(): void {
+    // Borrar el token de localStorage
+    localStorage.removeItem('token');
+    // Cerrar sesión en Google Sign in
+    this.auth2.signOut().then(() => {
+      // En este punto necesitamos redireccionar.
+      // Pero al tratarse de una tarea que viene de una librería externa en angular (Promesa), es necesario indicarle a Angular que no pierda el control del cliclo de vida
+      this.ngZone.run(() => {
+        this.rotuer.navigateByUrl('/auth/login');
+      })
+    });
+  }
+
+  // Función que inicializa el Google Sign in API
+  startApp() {
+    gapi.load('auth2', () => {
+      // Retrieve the singleton for the GoogleAuth library and set up the client.
+      this.auth2 = gapi.auth2.init({
+        client_id: '689500073926-bmqaoupnfdigj6hn3k58mlth5v98b32s.apps.googleusercontent.com',
+        cookiepolicy: 'single_host_origin',
+        // Request scopes in addition to 'profile' and 'email'
+        //scope: 'additional_scope'
+      });
+    });
+  };
 
 }

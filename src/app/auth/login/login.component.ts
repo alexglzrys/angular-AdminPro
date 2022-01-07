@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UsuariosService } from 'src/app/services/usuarios.service';
@@ -26,7 +26,8 @@ export class LoginComponent implements OnInit {
 
   constructor(private router: Router,
               private fb: FormBuilder,
-              private usuariosServices: UsuariosService) { }
+              private usuariosServices: UsuariosService,
+              private ngZone: NgZone) { }
 
   ngOnInit(): void {
     this.renderButton();
@@ -91,11 +92,13 @@ export class LoginComponent implements OnInit {
           // Si todo es correcto hacemos login en nuestro backend con el token generado por Google
           // Si el token es correcto, el backend nos retorna un token (propio) de acceso a el app
           this.usuariosServices.loginGoogle(id_token).subscribe(res => {
-            console.log(res);
-            // Este token lo guardamos en localStorage
-            localStorage.setItem('token', res.token)
-            // Redireccionar al usuario a la sección de Dashboard
-            this.router.navigateByUrl('/');
+            // ! Estas tareas de Angular se hacen dentro de una librería de terceros, es importante notificarle a Angular que no pierda el control del ciclo de vida
+            this.ngZone.run(() => {
+              // Este token lo guardamos en localStorage
+              localStorage.setItem('token', res.token)
+              // Redireccionar al usuario a la sección de Dashboard
+              this.router.navigateByUrl('/');
+            })
           }, err => {
             console.log(err);
           })
