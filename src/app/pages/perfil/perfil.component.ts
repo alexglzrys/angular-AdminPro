@@ -17,6 +17,7 @@ export class PerfilComponent implements OnInit {
 
   usuario!: Usuario
   imagenCargada!: File;
+  imagenTemporal!: string | null | ArrayBuffer;
 
   constructor(private fb: FormBuilder,
               private usuariosService: UsuariosService,
@@ -50,18 +51,36 @@ export class PerfilComponent implements OnInit {
   }
 
   // Este metodo se dispara cuando el control de archivos (file), cambia su valor (se carga una imagen)
-  cargarImagen(event: any) {
-    console.log(event);
+  cargarImagen(event: any): void | null {
+    //console.log(event);
     // Obtener la referencia hacia la imagen (toda su información)
     this.imagenCargada = event.target.files[0];
+
+    // No se selecciono imagen, por tanto no hay nada que mostrar
+    if (!this.imagenCargada) return this.imagenTemporal = null;
+
+    // Mostrar vista previa imagen seleccionada en base64
+    const reader = new FileReader();
+    reader.readAsDataURL(this.imagenCargada);
+    reader.onloadend = () => {
+      this.imagenTemporal = reader.result;
+    }
   }
 
   // Actualizar la imagen en el backend
   actualizarImagenPerfil() {
     this.fileUploadService.actualizarFoto(this.imagenCargada, 'usuarios', this.usuario.uid!).then(res => {
-      console.log(res.nombreArchivo);
+      if (res.ok) {
+        //console.log(res.nombreArchivo);
+        Swal.fire('Imagen actualizada', 'La imagen de perfil se actualizó correctamente', 'success');
+        // Actualizar imagen en vistas (gracias a la referencia de objetos)
+        this.usuario.img = res.nombreArchivo;
+      } else {
+        Swal.fire('Upss!', res.msg, 'error');
+      }
     }).catch(err => {
       console.log(err);
+      Swal.fire('Upss!', err.error.msg, 'error')
     })
   }
 

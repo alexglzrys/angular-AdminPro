@@ -33,6 +33,13 @@
         <h6 class="card-subtitle">Imagen de usuario</h6>
         <form class="form p-t-20">
           <div class="form-group">
+            <div class="text-center mb-3">
+              <!-- Vista previa imagen de perfil en base de datos -->
+              <img *ngIf="!imagenTemporal" [src]="usuario.getImageUrl" alt="avatar" width="120" height="120">
+              <!-- Vista previa imagen seleccionada -->
+              <img *ngIf="imagenTemporal" [src]="imagenTemporal" alt="avatar" width="120" height="120">
+            </div>
+
             <!-- Detectar cuando cambia el valor de este control (indica cuando se carga una nueva imagen) -->
             <input type="file" (change)="cargarImagen($event)">
           </div>
