@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { GetUsuariosRequest } from '../interfaces/get-usuarios-request';
 import { LoginForm } from '../interfaces/login-form';
 import { RegisterUserForm } from '../interfaces/register-user-form';
 import { Usuario } from '../models/usuario.model';
@@ -35,6 +36,14 @@ export class UsuariosService {
     return localStorage.getItem('token') || '';
   }
 
+  get headers(): object {
+    return {
+      headers: {
+        'x-token': this.token
+      }
+    }
+  }
+
   registrarUsuario(formData: RegisterUserForm): Observable<any> {
     const URL = `${ BASE_URL }/usuarios`;
     return this.http.post(URL, formData).pipe(
@@ -60,6 +69,11 @@ export class UsuariosService {
         'x-token': this.token
       }
     });
+  }
+
+  obtenerUsuarios(desde: number = 0): Observable<GetUsuariosRequest> {
+    const URL = `${ BASE_URL }/usuarios?desde=${ desde }`;
+    return this.http.get<GetUsuariosRequest>(URL, this.headers);
   }
 
   login(formData: LoginForm): Observable<any> {

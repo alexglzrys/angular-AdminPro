@@ -21,7 +21,7 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">Usuarios</h4>
-        <h6 class="card-subtitle">Usuarios registrados en mi aplicación</h6>
+        <h6 class="card-subtitle">Usuarios registrados en mi aplicación <strong>({{ totalUsuarios }})</strong></h6>
         <div class="table-responsive">
           <table class="table table-bordered">
             <thead>
@@ -35,12 +35,17 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Lunar probe project</td>
-                <td>Lunar probe project</td>
-                <td>Lunar probe project</td>
-                <td>Lunar probe project</td>
-                <td>Lunar probe project</td>
+              <tr *ngFor="let usuario of usuarios">
+                <td>xxx</td>
+                <td>{{ usuario.email }}</td>
+                <td>{{ usuario.nombre }}</td>
+                <td>{{ usuario.role }}</td>
+                <td>
+                  <span *ngIf="usuario.google; else classic" class="label label-info">Google</span>
+                  <ng-template #classic>
+                    <span class="label label-danger">Email / Password</span>
+                  </ng-template>
+                </td>
                 <td class="text-nowrap">
                   <a href="#" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
                   <a href="#" data-toggle="tooltip" data-original-title="Close"> <i class="fa fa-close text-danger"></i></a>
