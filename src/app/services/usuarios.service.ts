@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, delay, map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { GetUsuariosRequest } from '../interfaces/get-usuarios-request';
 import { LoginForm } from '../interfaces/login-form';
@@ -74,6 +74,8 @@ export class UsuariosService {
   obtenerUsuarios(desde: number = 0): Observable<GetUsuariosRequest> {
     const URL = `${ BASE_URL }/usuarios?desde=${ desde }`;
     return this.http.get<GetUsuariosRequest>(URL, this.headers).pipe(
+      // Simular carga lenta
+      delay(400),
       map(res => {
         // Mi listado de usuarios será un listado de instancias de usuario (para proyectar la imagen mediante el getter getImageUrl)
 

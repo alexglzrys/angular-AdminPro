@@ -13,6 +13,8 @@ export class UsuariosComponent implements OnInit {
   totalUsuarios!: number;
   usuarios!: Usuario[];
   desde: number = 0;
+  // Propiedad de control para mostrar la carga de información que viaja desde el servicioo
+  cargando: boolean = false;
 
   constructor(private usuariosServices: UsuariosService) { }
 
@@ -21,12 +23,16 @@ export class UsuariosComponent implements OnInit {
   }
 
   cargarUsuarios() {
+    this.cargando = true;
     // Consultar usuarios registrados
     // Indicar a partir de que registro se debe mostrar la información
     this.usuariosServices.obtenerUsuarios(this.desde).subscribe(({ total, usuarios}) => {
       // De la respuesta solo me sirve el total y la coleccion de usuarios (desestructuración)
       this.totalUsuarios = total;
       this.usuarios = usuarios;
+      this.cargando = false;
+    }, err => {
+      this.cargando = false;
     })
   }
 

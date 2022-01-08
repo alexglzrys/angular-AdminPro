@@ -7,7 +7,8 @@
     </div>
   </div>
 </div>
-<div class="row animated fadeIn fast">
+<!-- Solo se muestra este componente si la información del backend aun esta en proceso -->
+<div *ngIf="cargando" class="row animated fadeIn fast">
   <div class="col-12">
     <div class="alert alert-info text-center">
       <h4 class="alert-heading">Cargando</h4>
@@ -16,7 +17,8 @@
     </div>
   </div>
 </div>
-<div class="row animated fadeIn fast">
+<!-- Mostrar este componente solo cuando la data del servicio de usuarios este lista -->
+<div *ngIf="!cargando" class="row animated fadeIn fast">
   <div class="col-12">
     <div class="card">
       <div class="card-body">
@@ -40,13 +42,13 @@
                 <td>{{ usuario.email }}</td>
                 <td>{{ usuario.nombre }}</td>
                 <td>{{ usuario.role }}</td>
-                <td>
+                <td class="text-center">
                   <span *ngIf="usuario.google; else classic" class="label label-info">Google</span>
                   <ng-template #classic>
                     <span class="label label-danger">Password</span>
                   </ng-template>
                 </td>
-                <td class="text-nowrap">
+                <td class="text-nowrap text-center">
                   <a href="#" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
                   <a href="#" data-toggle="tooltip" data-original-title="Close"> <i class="fa fa-close text-danger"></i></a>
                 </td>
