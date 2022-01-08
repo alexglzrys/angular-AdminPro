@@ -12,16 +12,35 @@ export class UsuariosComponent implements OnInit {
 
   totalUsuarios!: number;
   usuarios!: Usuario[];
+  desde: number = 0;
 
   constructor(private usuariosServices: UsuariosService) { }
 
   ngOnInit(): void {
+    this.cargarUsuarios()
+  }
+
+  cargarUsuarios() {
     // Consultar usuarios registrados
-    this.usuariosServices.obtenerUsuarios(0).subscribe(({ total, usuarios}) => {
+    // Indicar a partir de que registro se debe mostrar la información
+    this.usuariosServices.obtenerUsuarios(this.desde).subscribe(({ total, usuarios}) => {
       // De la respuesta solo me sirve el total y la coleccion de usuarios (desestructuración)
       this.totalUsuarios = total;
       this.usuarios = usuarios;
     })
+  }
+
+  // Hacer una nueva petición de usuarios si el valor del paginador cambia
+  cambiarPagina(valor: number) {
+    this.desde += valor;
+    // Evitar desbordamientos
+    if (this.desde <= 0) {
+      this.desde = 0;
+    } else if (this.desde >= this.totalUsuarios) {
+      this.desde -= valor;
+    }
+
+    this.cargarUsuarios()
   }
 
 }
