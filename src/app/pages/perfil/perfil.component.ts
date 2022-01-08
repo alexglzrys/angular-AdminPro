@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Usuario } from 'src/app/models/usuario.model';
+import { FileUploadService } from 'src/app/services/file-upload.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import Swal from 'sweetalert2';
 
@@ -15,9 +16,11 @@ export class PerfilComponent implements OnInit {
   profileForm!: FormGroup
 
   usuario!: Usuario
+  imagenCargada!: File;
 
   constructor(private fb: FormBuilder,
-              private usuariosService: UsuariosService) {
+              private usuariosService: UsuariosService,
+              private fileUploadService: FileUploadService) {
                 // las peticiones HTTP se recomienda hacerlas en el ngOnInit, pero esta invocació al servicio no depende de una petición HTTP
                 // Una referencia a nuestro modelo usuario (que es un objeto)
                 this.usuario = usuariosService.usuario;
@@ -31,8 +34,6 @@ export class PerfilComponent implements OnInit {
     });
   }
 
-
-
   actualizarPerfil() {
     // Llamar servicio para actualizar datos de usuario
     this.usuariosService.actualizarUsuario(this.profileForm.value).subscribe(res => {
@@ -45,6 +46,22 @@ export class PerfilComponent implements OnInit {
     }, (err) => {
       console.log(err);
       Swal.fire('Upss!', err.error.msg, 'error');
+    })
+  }
+
+  // Este metodo se dispara cuando el control de archivos (file), cambia su valor (se carga una imagen)
+  cargarImagen(event: any) {
+    console.log(event);
+    // Obtener la referencia hacia la imagen (toda su información)
+    this.imagenCargada = event.target.files[0];
+  }
+
+  // Actualizar la imagen en el backend
+  actualizarImagenPerfil() {
+    this.fileUploadService.actualizarFoto(this.imagenCargada, 'usuarios', this.usuario.uid!).then(res => {
+      console.log(res.nombreArchivo);
+    }).catch(err => {
+      console.log(err);
     })
   }
 

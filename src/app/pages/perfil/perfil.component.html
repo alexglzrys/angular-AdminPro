@@ -33,9 +33,11 @@
         <h6 class="card-subtitle">Imagen de usuario</h6>
         <form class="form p-t-20">
           <div class="form-group">
-            <input type="file">
+            <!-- Detectar cuando cambia el valor de este control (indica cuando se carga una nueva imagen) -->
+            <input type="file" (change)="cargarImagen($event)">
           </div>
-          <button type="submit" class="btn btn-success btn-block waves-effect waves-light m-r-10">
+          <!-- El boton se deshabilita si no se sube un archivo -->
+          <button type="button" [disabled]="!imagenCargada" (click)="actualizarImagenPerfil()" class="btn btn-success btn-block waves-effect waves-light m-r-10">
             <i class="fa fa-save"></i> Cambiar imagen
           </button>
         </form>
