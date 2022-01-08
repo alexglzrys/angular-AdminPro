@@ -26,24 +26,24 @@
           <table class="table table-bordered">
             <thead>
               <tr>
-                <th>Avatar</th>
+                <th width="100">Avatar</th>
                 <th>Correo</th>
                 <th>Nombre</th>
-                <th>Role</th>
-                <th>Auth</th>
-                <th class="text-nowrap">Acciones</th>
+                <th width="100">Role</th>
+                <th width="100">Auth</th>
+                <th width="100" class="text-nowrap">Acciones</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let usuario of usuarios">
-                <td>xxx</td>
+                <td><img [src]="usuario.getImageUrl" [alt]="usuario.nombre" width="50"></td>
                 <td>{{ usuario.email }}</td>
                 <td>{{ usuario.nombre }}</td>
                 <td>{{ usuario.role }}</td>
                 <td>
                   <span *ngIf="usuario.google; else classic" class="label label-info">Google</span>
                   <ng-template #classic>
-                    <span class="label label-danger">Email / Password</span>
+                    <span class="label label-danger">Password</span>
                   </ng-template>
                 </td>
                 <td class="text-nowrap">

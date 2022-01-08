@@ -73,7 +73,17 @@ export class UsuariosService {
 
   obtenerUsuarios(desde: number = 0): Observable<GetUsuariosRequest> {
     const URL = `${ BASE_URL }/usuarios?desde=${ desde }`;
-    return this.http.get<GetUsuariosRequest>(URL, this.headers);
+    return this.http.get<GetUsuariosRequest>(URL, this.headers).pipe(
+      map(res => {
+        // Mi listado de usuarios será un listado de instancias de usuario (para proyectar la imagen mediante el getter getImageUrl)
+
+        // Otra forma más simple, es crear un pipe
+        const usuarios = res.usuarios.map(user => new Usuario(user.nombre, user.email, user.password, user.role, user.img, user.uid, user.google))
+        // Tal como viene originalmente la respuesta, el listado de usuarios cumple con las propiedades de un usuario, pero no son instancias. Es por ello que no funcionaba el getter
+        res.usuarios = usuarios;
+        return res;
+      })
+    );
   }
 
   login(formData: LoginForm): Observable<any> {
