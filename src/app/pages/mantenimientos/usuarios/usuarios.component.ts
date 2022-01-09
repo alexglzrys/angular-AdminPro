@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import { Usuario } from 'src/app/models/usuario.model';
 import { BusquedaService } from 'src/app/services/busqueda.service';
 import { ModalImagenService } from 'src/app/services/modal-imagen.service';
@@ -18,7 +20,7 @@ declare const toastr: any;
   styles: [
   ]
 })
-export class UsuariosComponent implements OnInit {
+export class UsuariosComponent implements OnInit, OnDestroy {
 
   totalUsuarios!: number;
   usuarios!: Usuario[];
@@ -26,13 +28,28 @@ export class UsuariosComponent implements OnInit {
   copiaUsuariosTemporales!: Usuario[];
   // Propiedad de control para mostrar la carga de información que viaja desde el servicioo
   cargando: boolean = false;
+  // Este componente usa una suscripción bajo demanda, lo mejor es cancelarla al momento de su destrucción
+  subsNuevaImagen!: Subscription;
 
   constructor(private usuariosServices: UsuariosService,
               private busquedaService: BusquedaService,
               private modalImagenService: ModalImagenService) { }
 
+  ngOnDestroy(): void {
+    // Eliminar suscripción bajo demanda
+    this.subsNuevaImagen.unsubscribe();
+  }
+
   ngOnInit(): void {
     this.cargarUsuarios()
+    // Suscripción a evento que se lanza cuando una nuava imagen de avatar se actualiza a través del modal
+    this.subsNuevaImagen = this.modalImagenService.nuevaImagen
+      .pipe(
+        // Al parecer la carga es muy rápida antes que el gestor de base de datos retorne la nueva info actualizada
+        delay(1000)
+      ).subscribe(url => {
+        this.cargarUsuarios();
+      })
   }
 
   cargarUsuarios() {
