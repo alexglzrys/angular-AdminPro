@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Usuario } from 'src/app/models/usuario.model';
 import { BusquedaService } from 'src/app/services/busqueda.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-usuarios',
@@ -65,6 +66,36 @@ export class UsuariosComponent implements OnInit {
       // Actualizar el listado de usuarios (contenido de la tabla)
       this.usuarios = usuarios;
     })
+  }
+
+  eliminarUsuario(usuario: Usuario): void | boolean {
+    // El usuario actual no puede eliminarse a si mismo del sistema
+    if (usuario.uid === this.usuariosServices.uid) {
+      Swal.fire('Upss!', 'No puede eliminarse a si mismo', 'error');
+      return;
+    }
+    // Mostrar alerta de confirmación de eliminación
+    Swal.fire({
+      title: '¿Estas seguro?',
+      text: `Realmente deseas eliminar a ${ usuario.nombre }`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Si, continuar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Proceder a eliminar el usuario seleccinoado
+        this.usuariosServices.eliminarUsuario(usuario).subscribe(res => {
+          // Lo mejor será volver a consultar el server, por cuestiones de la paginación
+          this.cargarUsuarios();
+          Swal.fire(
+            'Eliminado!',
+            `El usuario ${ usuario.nombre } fue eliminado correctamente`,
+            'success'
+          );
+        });
+      }
+    });
   }
 
 }

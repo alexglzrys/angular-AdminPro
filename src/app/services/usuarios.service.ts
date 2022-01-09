@@ -88,6 +88,11 @@ export class UsuariosService {
     );
   }
 
+  eliminarUsuario(usuario: Usuario): Observable<any> {
+    const URL = `${ BASE_URL }/usuarios/${ usuario.uid }`;
+    return this.http.delete(URL, this.headers);
+  }
+
   login(formData: LoginForm): Observable<any> {
     const URL = `${ BASE_URL }/login`;
     return this.http.post(URL, formData).pipe(
