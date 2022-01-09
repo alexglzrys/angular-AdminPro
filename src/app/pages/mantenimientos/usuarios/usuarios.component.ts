@@ -4,6 +4,8 @@ import { BusquedaService } from 'src/app/services/busqueda.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import Swal from 'sweetalert2';
 
+declare const toastr: any;
+
 @Component({
   selector: 'app-usuarios',
   templateUrl: './usuarios.component.html',
@@ -96,6 +98,14 @@ export class UsuariosComponent implements OnInit {
         });
       }
     });
+  }
+
+  actualizarRole(usuario: Usuario) {
+    this.usuariosServices.actualizarRoleUsuario(usuario).subscribe(res => {
+      // En ocasiones no conviene mostrar un alert o confirmación.,
+      // Quiza convenga un TOAST
+      toastr.info('Rol actualizado en el sistema', 'Aviso', {"positionClass": "toast-bottom-center" });
+    })
   }
 
 }

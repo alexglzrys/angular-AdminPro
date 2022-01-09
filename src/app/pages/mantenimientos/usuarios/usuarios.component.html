@@ -34,7 +34,7 @@
                 <th width="100">Avatar</th>
                 <th>Correo</th>
                 <th>Nombre</th>
-                <th width="100">Role</th>
+                <th width="190">Role</th>
                 <th width="100">Auth</th>
                 <th width="100" class="text-nowrap">Acciones</th>
               </tr>
@@ -44,7 +44,14 @@
                 <td><img [src]="usuario.getImageUrl" [alt]="usuario.nombre" width="50"></td>
                 <td>{{ usuario.email }}</td>
                 <td>{{ usuario.nombre }}</td>
-                <td>{{ usuario.role }}</td>
+                <td>
+                  <!-- Vincular el role de usuario con el control select
+                  Si cambia, se actualiza el rol en base de datos -->
+                  <select class="form-control" [(ngModel)]="usuario.role" (change)="actualizarRole(usuario)">
+                    <option value="ADMIN_ROLE">ADMIN_ROLE</option>
+                    <option value="USER_ROLE">USER_ROLE</option>
+                  </select>
+                </td>
                 <td class="text-center">
                   <span *ngIf="usuario.google; else classic" class="label label-info">Google</span>
                   <ng-template #classic>
@@ -52,7 +59,6 @@
                   </ng-template>
                 </td>
                 <td class="text-nowrap text-center">
-                  <a href="#" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
                   <a (click)="eliminarUsuario(usuario)" style="cursor: pointer;" data-toggle="tooltip" data-original-title="Close"> <i class="fa fa-close text-danger"></i></a>
                 </td>
               </tr>

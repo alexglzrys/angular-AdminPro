@@ -93,6 +93,11 @@ export class UsuariosService {
     return this.http.delete(URL, this.headers);
   }
 
+  actualizarRoleUsuario(usuario: Usuario): Observable<any> {
+    const URL = `${ BASE_URL }/usuarios/${ usuario.uid }`;
+    return this.http.put(URL, usuario, this.headers);
+  }
+
   login(formData: LoginForm): Observable<any> {
     const URL = `${ BASE_URL }/login`;
     return this.http.post(URL, formData).pipe(
