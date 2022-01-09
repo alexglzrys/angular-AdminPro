@@ -2,3 +2,18 @@
 #themecolors .selector {
   cursor: pointer;
 }
+
+/* Estilo para encapsular modales gestionados de forma manual */
+#modal-custom-wrapper {
+  display: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, .4);
+  z-index: 999999;
+}
+.mostrar-modal {
+  display: block !important;
+}

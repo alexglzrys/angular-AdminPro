@@ -1,25 +1,31 @@
-<!-- Button trigger modal -->
-<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Launch demo modal
-</button> -->
+<div id="modal-custom-wrapper" class="animated fadeIn fast" [class.mostrar-modal]="!modalImagenService.ocultarModal">
+  <!-- Modal
+  Lo dejamos visible, ya que su gestión se hara manualmente a través de un servicio -->
+  <div id="responsive-modal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: block;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Cargar Imagen</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cerrarModal()">×</button>
+            </div>
+            <div class="modal-body">
+              <h5>Seleccione una imagen para usar como Avatar</h5>
+              <div class="text-center mb-3">
+                <!-- Vista previa imagen de perfil en base de datos -->
+                <img *ngIf="!imagenTemporal" [src]="modalImagenService.img" alt="avatar" width="120" height="120">
+                <!-- Vista previa imagen seleccionada -->
+                <img *ngIf="imagenTemporal" [src]="imagenTemporal" alt="avatar" width="120" height="120">
+              </div>
 
-<!-- Modal -->
-<div class="modal fade" id="modalActualizarImagen" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Cargar Imagen</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <h5>Seleccione una imagen para usar como Avatar</h5>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-danger waves-effect waves-light">Actualizar</button>
-      </div>
+              <!-- Detectar cuando cambia el valor de este control (indica cuando se carga una nueva imagen) -->
+              <input type="file" (change)="cargarImagen($event)">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal" (click)="cerrarModal()">Cancelar</button>
+                <button type="button" class="btn btn-danger waves-effect waves-light">Actualizar</button>
+            </div>
+        </div>
     </div>
   </div>
 </div>
+

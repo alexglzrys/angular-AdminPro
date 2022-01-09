@@ -1,11 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Usuario } from 'src/app/models/usuario.model';
 import { BusquedaService } from 'src/app/services/busqueda.service';
+import { ModalImagenService } from 'src/app/services/modal-imagen.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import Swal from 'sweetalert2';
 
 declare const toastr: any;
-declare const $: any;
+
+// ! es un lio trabajar con modales JQUERY al querer pasar data dinámica (estoy forzado a usar atributos data-),
+// ? el problema es que esa data reside en un componente ajeno al modal.
+// * para esto mejor se uso un servicio que centralice todo lo que debe mostrar el modal
+// declare const $: any;
 
 @Component({
   selector: 'app-usuarios',
@@ -23,7 +28,8 @@ export class UsuariosComponent implements OnInit {
   cargando: boolean = false;
 
   constructor(private usuariosServices: UsuariosService,
-              private busquedaService: BusquedaService) { }
+              private busquedaService: BusquedaService,
+              private modalImagenService: ModalImagenService) { }
 
   ngOnInit(): void {
     this.cargarUsuarios()
@@ -109,8 +115,10 @@ export class UsuariosComponent implements OnInit {
     })
   }
 
-  mostrarModal() {
-    $("#modalActualizarImagen").modal('show');
+  mostrarModal(usuario: Usuario) {
+    // Llama al servicio de modal para mostrarlo en pantalla
+    this.modalImagenService.abrirModal('usuarios', usuario.uid!, usuario.img);
+    console.log(usuario)
   }
 
 }
