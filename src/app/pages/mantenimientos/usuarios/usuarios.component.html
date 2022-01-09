@@ -2,7 +2,10 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <input type="text" class="form-control" placeholder="Buscar usuario...">
+        <!-- Controles básicos no requieren de un formularios basados en template o reactivos
+        Lo mejor es usar una variable de plantilla
+        Por cada pulsación se busca el contenido relacionado -->
+        <input type="text" class="form-control" #txtTermino (keyup)="buscarUsuarios(txtTermino.value)" placeholder="Buscar usuario...">
       </div>
     </div>
   </div>
@@ -56,9 +59,12 @@
             </tbody>
           </table>
         </div>
-        <button class="btn btn-secondary" (click)="cambiarPagina(-5)">Anteriores</button>
-        &nbsp;
-        <button class="btn btn-secondary" (click)="cambiarPagina(5)">Siguientes</button>
+        <!-- Mostrar controles de paginación si el contenido no es resultado de una búsqueda -->
+        <ng-container *ngIf="txtTermino.value.length === 0">
+          <button class="btn btn-secondary" (click)="cambiarPagina(-5)">Anteriores</button>
+          &nbsp;
+          <button class="btn btn-secondary" (click)="cambiarPagina(5)">Siguientes</button>
+        </ng-container>
       </div>
     </div>
   </div>
