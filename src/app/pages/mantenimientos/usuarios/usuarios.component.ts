@@ -5,6 +5,7 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 import Swal from 'sweetalert2';
 
 declare const toastr: any;
+declare const $: any;
 
 @Component({
   selector: 'app-usuarios',
@@ -106,6 +107,10 @@ export class UsuariosComponent implements OnInit {
       // Quiza convenga un TOAST
       toastr.info('Rol actualizado en el sistema', 'Aviso', {"positionClass": "toast-bottom-center" });
     })
+  }
+
+  mostrarModal() {
+    $("#modalActualizarImagen").modal('show');
   }
 
 }
