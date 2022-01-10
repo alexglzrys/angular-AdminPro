@@ -15,6 +15,7 @@ import { PerfilComponent } from './perfil/perfil.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component';
 import { HospitalesComponent } from './mantenimientos/hospitales/hospitales.component';
+import { PipesModule } from '../pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { HospitalesComponent } from './mantenimientos/hospitales/hospitales.comp
     PagesRoutingModule,
     ReactiveFormsModule,
     FormsModule,
+    PipesModule,  // Se usarán algunos pipes declarados en este módulo
   ]
 })
 export class PagesModule { }

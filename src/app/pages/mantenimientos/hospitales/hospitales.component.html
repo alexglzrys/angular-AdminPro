@@ -34,7 +34,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let hospital of hospitales">
-                <td class="text-center"><img [src]="hospital.img" alt="Imagen" width="50"></td>
+                <td class="text-center"><img [src]="hospital.img! | imagen:'hospitales'" alt="Imagen" width="50" style="cursor: pointer;"></td>
                 <td>
                   <input type="text" class="form-control" [(ngModel)]="hospital.nombre" placeholder="Ingrese el nombre del hospital">
                 </td>
