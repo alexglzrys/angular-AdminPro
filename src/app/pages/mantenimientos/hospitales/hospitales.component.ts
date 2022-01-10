@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { Hospital } from 'src/app/models/hospital.model';
+import { BusquedaService } from 'src/app/services/busqueda.service';
 import { HospitalService } from 'src/app/services/hospital.service';
 import { ModalImagenService } from 'src/app/services/modal-imagen.service';
 import Swal from 'sweetalert2';
@@ -18,8 +19,13 @@ export class HospitalesComponent implements OnInit, OnDestroy {
   public loader: boolean = false;
   private subNuevaImagen!: Subscription;
 
+  private hospitalesTemp: Hospital[] = [];
+  private desde: number = 0;
+  public totalHospitales: number = 0;
+
   constructor(private hospitalService: HospitalService,
-              private modalImagenService: ModalImagenService) { }
+              private modalImagenService: ModalImagenService,
+              private busquedaService: BusquedaService) { }
 
   ngOnDestroy(): void {
     this.subNuevaImagen.unsubscribe();
@@ -35,13 +41,31 @@ export class HospitalesComponent implements OnInit, OnDestroy {
 
   cargarHospitales() {
     this.loader = true;
-    this.hospitalService.getHospitales().subscribe(hospitales => {
-      this.hospitales = hospitales;
+    this.hospitalService.getHospitales(this.desde).subscribe(res => {
+      this.hospitales = res.hospitales;
+      this.totalHospitales = res.total;
+      // Guardar una copia temporal - en caso de que el usuario busque algo y luego lo borre (para tener contenido en la tabla)
+      this.hospitalesTemp = res.hospitales;
     }, err => {
       console.log(err);
     }, () => {
       this.loader = false;
     })
+  }
+
+   // Hacer una nueva petición de hospitales si el valor del paginador cambia
+   cambiarPagina(valor: number): boolean | void {
+    this.desde += valor;
+    // Evitar desbordamientos
+    if (this.desde < 0) {
+      this.desde = 0;
+      return;
+    } else if (this.desde >= this.totalHospitales) {
+      this.desde -= valor;
+      return;
+    }
+    console.log(this.desde, this.totalHospitales);
+    this.cargarHospitales();
   }
 
   guardarCambios(hospital: Hospital) {
@@ -93,5 +117,15 @@ export class HospitalesComponent implements OnInit, OnDestroy {
     console.log(hospital)
   }
 
+  buscar(termino: string): boolean | void {
+    if (termino.trim().length === 0) {
+      // LLeno la tabla con la ultima carga de hospitales
+      this.hospitales = this.hospitalesTemp;
+      return;
+    }
+    this.busquedaService.buscar('hospitales', termino).subscribe(hospitales => {
+      this.hospitales = hospitales as Hospital[];
+    })
+  }
 
 }

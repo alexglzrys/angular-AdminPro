@@ -90,7 +90,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
     this.busquedaService.buscar('usuarios', termino).subscribe(usuarios => {
       // Actualizar el listado de usuarios (contenido de la tabla)
-      this.usuarios = usuarios;
+      this.usuarios = usuarios as Usuario[];
     })
   }
 

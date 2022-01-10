@@ -28,13 +28,16 @@ export class HospitalService {
     }
   }
 
-  getHospitales(): Observable<Hospital[]> {
-    const URL = `${BASE_URL}/hospitales`;
-    return this.http.get<{ ok: boolean, hospitales: Hospital[] }>(URL, this.headers).pipe(
+  getHospitales(desde: number): Observable<{hospitales: Hospital[], total: number}> {
+    const URL = `${BASE_URL}/hospitales?desde=${desde}`;
+    return this.http.get<{ ok: boolean, hospitales: Hospital[], total: number }>(URL, this.headers).pipe(
       delay(1000),
-      map((res: { ok: boolean, hospitales: Hospital[] }) => {
+      map(res => {
         // Solo me interesa devolver el listado de hospitales
-        return res.hospitales;
+        return {
+          hospitales: res.hospitales,
+          total: res.total
+        };
       })
     );
   }
