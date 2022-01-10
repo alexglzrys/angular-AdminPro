@@ -39,5 +39,20 @@ export class HospitalService {
     );
   }
 
+  registrarHospital(nombre: string): Observable<any> {
+    const URL = `${BASE_URL}/hospitales`;
+    return this.http.post(URL, {nombre}, this.headers);
+  }
+
+  actualizarHospital(_id: string, nombre: string): Observable<any> {
+    const URL = `${BASE_URL}/hospitales/${_id}`;
+    return this.http.put(URL, {nombre}, this.headers);
+  }
+
+  eliminarHospital(_id: string): Observable<any> {
+    const URL = `${BASE_URL}/hospitales/${_id}`;
+    return this.http.delete(URL, this.headers);
+  }
+
 
 }
