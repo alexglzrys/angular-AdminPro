@@ -6,6 +6,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { GraficaUnoComponent } from './grafica-uno/grafica-uno.component';
 import { PagesComponent } from './layouts/pages/pages.component';
 import { HospitalesComponent } from './mantenimientos/hospitales/hospitales.component';
+import { MedicoComponent } from './mantenimientos/medicos/medico.component';
+import { MedicosComponent } from './mantenimientos/medicos/medicos.component';
 import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component';
 import { PerfilComponent } from './perfil/perfil.component';
 import { ProgressComponent } from './progress/progress.component';
@@ -33,6 +35,8 @@ const routes: Routes = [
       // Mantenimientos
       { path: 'usuarios', component: UsuariosComponent, data: { title: 'Usuarios de aplicación' } },
       { path: 'hospitales', component: HospitalesComponent, data: { title: 'Hospitales de aplicación' } },
+      { path: 'medicos', component: MedicosComponent, data: { title: 'Médicos de aplicación' } },
+      { path: 'medicos/:id', component: MedicoComponent, data: { title: 'Médico de aplicación' } },
     ]
   }
 ];
