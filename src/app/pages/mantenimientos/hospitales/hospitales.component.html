@@ -7,7 +7,7 @@
     </div>
   </div>
 </div>
-<div class="row animated fadeIn fast">
+<div *ngIf="loader" class="row animated fadeIn fast">
   <div class="col-12">
     <div class="alert alert-info text-center">
       <h4 class="alert-heading">Cargando</h4>
@@ -16,12 +16,12 @@
     </div>
   </div>
 </div>
-<div class="row animated fadeIn fast">
+<div *ngIf="!loader" class="row animated fadeIn fast">
   <div class="col-12">
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">Hospitales</h4>
-        <h6 class="card-subtitle">Hospitales registrados en mi aplicación</h6>
+        <h6 class="card-subtitle">Hospitales registrados en mi aplicación <strong>({{ hospitales.length }})</strong></h6>
         <div class="table-responsive">
           <table class="table table-bordered">
             <thead>
@@ -33,15 +33,15 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td class="text-center"><img src="assets/images/users/1.jpg" alt="Imagen" width="50"></td>
+              <tr *ngFor="let hospital of hospitales">
+                <td class="text-center"><img [src]="hospital.img" alt="Imagen" width="50"></td>
                 <td>
-                  <input type="text" class="form-control" placeholder="Ingrese el nombre del hospital">
+                  <input type="text" class="form-control" [(ngModel)]="hospital.nombre" placeholder="Ingrese el nombre del hospital">
                 </td>
-                <td>Lunar probe project</td>
+                <td>{{ hospital.usuario?.nombre }}</td>
                 <td class="text-nowrap text-center">
-                  <a href="#" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
-                  <a href="#" data-toggle="tooltip" data-original-title="Close"> <i class="fa fa-close text-danger"></i></a>
+                  <a href="#" data-toggle="tooltip" data-original-title="Guardar cambios"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                  <a href="#" data-toggle="tooltip" data-original-title="Borrar"> <i class="fa fa-close text-danger"></i></a>
                 </td>
               </tr>
             </tbody>

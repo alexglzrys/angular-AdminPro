@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { delay, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Hospital } from '../models/hospital.model';
 
@@ -31,7 +31,9 @@ export class HospitalService {
   getHospitales(): Observable<Hospital[]> {
     const URL = `${BASE_URL}/hospitales`;
     return this.http.get<{ ok: boolean, hospitales: Hospital[] }>(URL, this.headers).pipe(
+      delay(1000),
       map((res: { ok: boolean, hospitales: Hospital[] }) => {
+        // Solo me interesa devolver el listado de hospitales
         return res.hospitales;
       })
     );
