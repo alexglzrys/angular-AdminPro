@@ -23,7 +23,7 @@
         <div class="row">
           <div class="col">
             <h4 class="card-title">Médicos</h4>
-            <h6 class="card-subtitle">Médicos registrados en mi aplicación</h6>
+            <h6 class="card-subtitle">Médicos registrados en mi aplicación <strong>({{ medicosTotales }})</strong></h6>
           </div>
           <div class="col">
             <a routerLink="/dashboard/medico/nuevo" class="btn btn-primary float-right"><i class="fa fa-save mr-2"></i> Crear médico</a>
@@ -53,9 +53,9 @@
           </table>
         </div>
         <ng-container *ngIf="!txtTermino.value.length">
-          <button class="btn btn-secondary">Anteriores</button>
+          <button (click)="cambiarPagina(-5)" class="btn btn-secondary">Anteriores</button>
           &nbsp;
-          <button class="btn btn-secondary">Siguientes</button>
+          <button (click)="cambiarPagina(5)" class="btn btn-secondary">Siguientes</button>
         </ng-container>
       </div>
     </div>

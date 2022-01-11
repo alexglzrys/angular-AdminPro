@@ -16,9 +16,11 @@ export class MedicosComponent implements OnInit, OnDestroy {
 
   medicos: Medico[] = [];
   loader: boolean = false;
+  medicosTotales: number = 0;
 
   private medicosTemp: Medico[] = [];
   private subsNuevaImagen!: Subscription;
+  private desde: number = 0;
 
   constructor(private medicoService: MedicoService,
               private busquedaService: BusquedaService,
@@ -37,9 +39,10 @@ export class MedicosComponent implements OnInit, OnDestroy {
 
   cargarMedicos() {
     this.loader = true;
-    this.medicoService.getMedicos().subscribe(medicos => {
-      this.medicos = medicos;
-      this.medicosTemp = medicos;
+    this.medicoService.getMedicos(this.desde).subscribe(res => {
+      this.medicos = res.medicos;
+      this.medicosTemp = res.medicos;
+      this.medicosTotales = res.total;
     },
     err => {
 
@@ -58,6 +61,21 @@ export class MedicosComponent implements OnInit, OnDestroy {
     this.busquedaService.buscar('medicos', termino).subscribe((medicos: Medico[]) => {
       this.medicos = medicos;
     })
+  }
+
+  // Hacer una nueva petición de medicos si el valor del paginador cambia
+  cambiarPagina(valor: number): boolean | void {
+    this.desde += valor;
+    // Evitar desbordamientos
+    if (this.desde < 0) {
+      this.desde = 0;
+      return;
+    } else if (this.desde >= this.medicosTotales) {
+      this.desde -= valor;
+      return;
+    }
+
+    this.cargarMedicos();
   }
 
   mostrarModal(medico: Medico) {

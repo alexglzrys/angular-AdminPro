@@ -25,13 +25,16 @@ export class MedicoService {
     }
   }
 
-  getMedicos(): Observable<Medico[]> {
-    const URL = `${BASE_URL}/medicos`;
-    return this.http.get<{ ok: boolean, medicos: Medico[] }>(URL, this.headers).pipe(
+  getMedicos(desde: number): Observable<{ medicos: Medico[], total: number }> {
+    const URL = `${BASE_URL}/medicos?desde=${desde}`;
+    return this.http.get<{ ok: boolean, medicos: Medico[], total: number }>(URL, this.headers).pipe(
       delay(1000),
       map(res => {
         // Solo me interesa devolver el listado de médicos
-        return res.medicos;
+        return {
+          medicos: res.medicos,
+          total: res.total
+        }
       })
     );
   }
