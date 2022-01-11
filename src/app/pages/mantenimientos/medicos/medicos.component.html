@@ -2,7 +2,7 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <input type="text" class="form-control" placeholder="Buscar médico...">
+        <input type="text" class="form-control" #txtTermino (keyup)="buscar( txtTermino.value )" placeholder="Buscar médico...">
       </div>
     </div>
   </div>
@@ -20,8 +20,15 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <h4 class="card-title">Médicos</h4>
-        <h6 class="card-subtitle">Médicos registrados en mi aplicación</h6>
+        <div class="row">
+          <div class="col">
+            <h4 class="card-title">Médicos</h4>
+            <h6 class="card-subtitle">Médicos registrados en mi aplicación</h6>
+          </div>
+          <div class="col">
+            <a routerLink="/dashboard/medico/nuevo" class="btn btn-primary float-right"><i class="fa fa-save mr-2"></i> Crear médico</a>
+          </div>
+        </div>
         <div class="table-responsive">
           <table class="table table-bordered">
             <thead>
@@ -38,16 +45,18 @@
                 </td>
                 <td>{{ medico.nombre }}</td>
                 <td class="text-nowrap text-center">
-                  <a href="#" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
-                  <a href="#" data-toggle="tooltip" data-original-title="Close"> <i class="fa fa-close text-danger"></i></a>
+                  <a [routerLink]="['/dashboard/medico', medico._id]" style="cursor: pointer;" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                  <a style="cursor: pointer;" data-toggle="tooltip" data-original-title="Close"> <i class="fa fa-close text-danger"></i></a>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <button class="btn btn-secondary">Anteriores</button>
-        &nbsp;
-        <button class="btn btn-secondary">Siguientes</button>
+        <ng-container *ngIf="!txtTermino.value.length">
+          <button class="btn btn-secondary">Anteriores</button>
+          &nbsp;
+          <button class="btn btn-secondary">Siguientes</button>
+        </ng-container>
       </div>
     </div>
   </div>
