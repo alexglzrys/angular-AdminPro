@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import { Medico } from 'src/app/models/medico.model';
 import { BusquedaService } from 'src/app/services/busqueda.service';
 import { MedicoService } from 'src/app/services/medico.service';
+import { ModalImagenService } from 'src/app/services/modal-imagen.service';
 
 @Component({
   selector: 'app-medicos',
@@ -16,16 +18,21 @@ export class MedicosComponent implements OnInit, OnDestroy {
   loader: boolean = false;
 
   private medicosTemp: Medico[] = [];
+  private subsNuevaImagen!: Subscription;
 
   constructor(private medicoService: MedicoService,
-              private busquedaService: BusquedaService) { }
+              private busquedaService: BusquedaService,
+              private modalImagenService: ModalImagenService) { }
 
   ngOnDestroy(): void {
-
+    this.subsNuevaImagen.unsubscribe();
   }
 
   ngOnInit(): void {
     this.cargarMedicos();
+    this.subsNuevaImagen = this.modalImagenService.nuevaImagen.pipe(delay(1000)).subscribe(img => {
+      this.cargarMedicos();
+    })
   }
 
   cargarMedicos() {
@@ -53,5 +60,8 @@ export class MedicosComponent implements OnInit, OnDestroy {
     })
   }
 
-
+  mostrarModal(medico: Medico) {
+    // Llama al servicio de modal para mostrarlo en pantalla
+    this.modalImagenService.abrirModal('medicos', medico._id!, medico.img);
+  }
 }
