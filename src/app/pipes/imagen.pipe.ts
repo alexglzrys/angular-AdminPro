@@ -14,7 +14,7 @@ export class ImagenPipe implements PipeTransform {
    * @param tipo : El tipo de colección
    * @returns : La URL completa hacia el archivo
    */
-  transform(img: string, tipo: 'usuarios'|'medicos'|'hospitales'): string {
+  transform(img: string | undefined, tipo: 'usuarios'|'medicos'|'hospitales'): string {
     // es necesario componer toda la ruta
     if (img) {
       return `${ API_URL }/uploads/${tipo}/${img}`;

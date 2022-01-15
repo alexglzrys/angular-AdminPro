@@ -13,6 +13,7 @@ export class MedicoComponent implements OnInit {
 
   public medicoForm!: FormGroup;
   public hospitales: Hospital[] = [];
+  public hospitalSeleccionado: Hospital | undefined;
 
   constructor(private fb: FormBuilder,
               private hospitalService: HospitalService) { }
@@ -23,6 +24,11 @@ export class MedicoComponent implements OnInit {
       hospital: ['', Validators.required]
     });
     this.cargarHospitales();
+
+    // Suscripicón al campo select (changes) para mostrar informaciónn del hospital seleccionado
+    this.medicoForm.get('hospital')?.valueChanges.subscribe(hospitalId => {
+      this.hospitalSeleccionado = this.hospitales.find(hosp => hosp._id === hospitalId);
+    })
   }
 
   cargarHospitales() {

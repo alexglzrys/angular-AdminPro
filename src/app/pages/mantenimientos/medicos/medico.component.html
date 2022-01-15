@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col">
+  <div class="col-md-6">
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">Médico</h4>
@@ -44,12 +44,12 @@
       </div>
     </div>
   </div>
-  <div class="col">
+  <div class="col animated fadeIn" *ngIf="hospitalSeleccionado">
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">Hospital</h4>
-        <h6 class="card-subtitle">Información del hospital asignado</h6>
-        <img src="http://localhost:5000/api/uploads/medicos/99d22ed0-8516-41a0-b471-60e08edfd200.png" alt="Imagen hospital" width="200">
+        <h6 class="card-subtitle">{{ hospitalSeleccionado.nombre }}</h6>
+        <img [src]="hospitalSeleccionado.img | imagen:'hospitales'" alt="Imagen hospital" width="200">
       </div>
     </div>
   </div>
