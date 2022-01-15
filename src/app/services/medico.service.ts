@@ -41,7 +41,7 @@ export class MedicoService {
 
   // Se puede mandar X información en el cuerpo de la petición.
   // Sin embargo, el backend solo tomará en cuenta la información que necesita
-  registrarMedico(medico: Medico): Observable<any> {
+  registrarMedico(medico: {nombre: string, hospital: string}): Observable<any> {
     const URL = `${BASE_URL}/medicos`;
     return this.http.post(URL, medico, this.headers);
   }
