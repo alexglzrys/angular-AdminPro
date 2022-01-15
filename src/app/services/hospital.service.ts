@@ -42,6 +42,16 @@ export class HospitalService {
     );
   }
 
+  getAllHospitales(): Observable<Hospital[]> {
+    const URL = `${BASE_URL}/hospitales/all`;
+    return this.http.get<{ ok: boolean, hospitales: Hospital[]}>(URL, this.headers).pipe(
+      delay(1000),
+      map(res => {
+        return res.hospitales
+      })
+    );
+  }
+
   registrarHospital(nombre: string): Observable<any> {
     const URL = `${BASE_URL}/hospitales`;
     return this.http.post(URL, {nombre}, this.headers);
