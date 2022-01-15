@@ -40,6 +40,9 @@ export class MedicoComponent implements OnInit {
 
     // Observar el parámetro de ruta (id) para saber si existe un id de médico
     this.activatedRoute.params.subscribe(({ id }) => {
+      // ! Una manera para saber si hay fugas de memoria en los subscribes, es colocar console.log() para ver en consola si se muestran de forma exponencial si entramos y salimos de este componente
+      // console.log('tick);
+
       if (id !== 'nuevo') {
         // Cargar información del médico seleccionado
         this.cargarMedicoSeleccionado(id);
@@ -55,19 +58,35 @@ export class MedicoComponent implements OnInit {
 
   cargarMedicoSeleccionado(id: string) {
     this.medicoService.getMedicoById(id).subscribe(medico => {
-      this.medicoSeleccionado = medico;
-      // Setear el nombre y hospital en los campos del formulario
-      this.medicoForm.setValue({nombre: medico.nombre, hospital: medico.hospital?._id});
+      // Si es null, entonces no se encontro el médico solicitado
+      if (!medico) {
+        this.router.navigateByUrl('/dashboard/medicos');
+      } else {
+        this.medicoSeleccionado = medico;
+        // Setear el nombre y hospital en los campos del formulario (tambien aplica con setValue())
+        this.medicoForm.patchValue({nombre: medico.nombre, hospital: medico.hospital?._id});
+      }
     })
   }
 
   registrar() {
     const { nombre } = this.medicoForm.value;
-    this.medicoService.registrarMedico(this.medicoForm.value).subscribe((res: any) => {
-      Swal.fire('Registrado', `${nombre} fue registrado correctamente en el sistema`, 'success');
-      // Redireccionar al usuario a esta misma ruta, pero con el id del médico registrado
-      this.router.navigateByUrl(`dashboard/medico/${res.medico._id}`);
-    });
+    // Verificar si se trata de un registro o actualización
+    if (this.medicoSeleccionado) {
+      const nuevaData = {
+        ...this.medicoForm.value,
+        _id: this.medicoSeleccionado._id
+      }
+      this.medicoService.actualizarMedico(nuevaData).subscribe(res => {
+        Swal.fire('Actualizado', `${nombre} fue actualizado correctamente en el sistema`, 'success');
+      })
+    } else {
+      this.medicoService.registrarMedico(this.medicoForm.value).subscribe((res: any) => {
+        Swal.fire('Registrado', `${nombre} fue registrado correctamente en el sistema`, 'success');
+        // Redireccionar al usuario a esta misma ruta, pero con el id del médico registrado
+        this.router.navigateByUrl(`dashboard/medico/${res.medico._id}`);
+      });
+    }
   }
 
 }
