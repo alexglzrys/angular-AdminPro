@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../guards/auth.guard';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
+import { BusquedaComponent } from './busqueda/busqueda.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { GraficaUnoComponent } from './grafica-uno/grafica-uno.component';
 import { PagesComponent } from './layouts/pages/pages.component';
@@ -37,6 +38,8 @@ const routes: Routes = [
       { path: 'hospitales', component: HospitalesComponent, data: { title: 'Hospitales de aplicación' } },
       { path: 'medicos', component: MedicosComponent, data: { title: 'Médicos de aplicación' } },
       { path: 'medico/:id', component: MedicoComponent, data: { title: 'Médico de aplicación' } },
+      // Buscador general
+      { path: 'search/:termino', component: BusquedaComponent, data: { title: 'Búsqueda general de aplicación'} }
     ]
   }
 ];
