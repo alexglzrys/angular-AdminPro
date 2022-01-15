@@ -9,7 +9,7 @@
             <label for="exampleInputuname3" class="col-sm-3 control-label">Foto</label>
             <div class="col-sm-9">
               <div class="input-group">
-                <img src="http://localhost:5000/api/uploads/medicos/99d22ed0-8516-41a0-b471-60e08edfd200.png" alt="Avatar médico" width="200">
+                <img [src]="medicoSeleccionado.img | imagen:'medicos'" alt="Avatar médico" width="200">
               </div>
             </div>
           </div>

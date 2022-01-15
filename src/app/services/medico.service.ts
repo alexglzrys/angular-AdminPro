@@ -39,6 +39,18 @@ export class MedicoService {
     );
   }
 
+
+  getMedicoById(id: string): Observable<Medico> {
+    const URL = `${BASE_URL}/medicos/${id}`;
+    return this.http.get<{ ok: boolean, medico: Medico}>(URL, this.headers).pipe(
+      delay(1000),
+      map(res => {
+        // Solo me interesa devolver el médico
+        return res.medico
+      })
+    );
+  }
+
   // Se puede mandar X información en el cuerpo de la petición.
   // Sin embargo, el backend solo tomará en cuenta la información que necesita
   registrarMedico(medico: {nombre: string, hospital: string}): Observable<any> {

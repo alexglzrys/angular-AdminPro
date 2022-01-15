@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Hospital } from 'src/app/models/hospital.model';
 import { Medico } from 'src/app/models/medico.model';
 import { HospitalService } from 'src/app/services/hospital.service';
@@ -23,7 +23,8 @@ export class MedicoComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private hospitalService: HospitalService,
               private medicoService: MedicoService,
-              private router: Router) { }
+              private router: Router,
+              private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.medicoForm = this.fb.group({
@@ -35,12 +36,28 @@ export class MedicoComponent implements OnInit {
     // Suscripicón al campo select (changes) para mostrar informaciónn del hospital seleccionado
     this.medicoForm.get('hospital')?.valueChanges.subscribe(hospitalId => {
       this.hospitalSeleccionado = this.hospitales.find(hosp => hosp._id === hospitalId);
+    });
+
+    // Observar el parámetro de ruta (id) para saber si existe un id de médico
+    this.activatedRoute.params.subscribe(({ id }) => {
+      if (id !== 'nuevo') {
+        // Cargar información del médico seleccionado
+        this.cargarMedicoSeleccionado(id);
+      }
     })
   }
 
   cargarHospitales() {
     this.hospitalService.getAllHospitales().subscribe(hospitales => {
       this.hospitales = hospitales
+    })
+  }
+
+  cargarMedicoSeleccionado(id: string) {
+    this.medicoService.getMedicoById(id).subscribe(medico => {
+      this.medicoSeleccionado = medico;
+      // Setear el nombre y hospital en los campos del formulario
+      this.medicoForm.setValue({nombre: medico.nombre, hospital: medico.hospital?._id});
     })
   }
 
