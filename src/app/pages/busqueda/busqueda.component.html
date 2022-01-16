@@ -4,7 +4,10 @@
       <div class="card-body">
           <h4 class="card-title">Usuarios</h4>
           <h6 class="card-subtitle">Listado de usuarios localizados</h6>
-          <div class="table-responsive">
+          <div *ngIf="!usuarios.length" class="alert alert-info">
+            No existen hospitales relacionados con ese término
+          </div>
+          <div *ngIf="usuarios.length" class="table-responsive">
               <table class="table">
                   <thead>
                       <tr>
@@ -13,9 +16,9 @@
                       </tr>
                   </thead>
                   <tbody>
-                      <tr>
-                          <td>Prohaska</td>
-                          <td>@Genelia</td>
+                      <tr *ngFor="let usuario of usuarios" class="animated fadeIn">
+                        <td><img [src]="usuario.img | imagen:'usuarios'" [alt]="usuario.nombre" width="50"></td>
+                          <td>{{ usuario.nombre }}</td>
                       </tr>
                   </tbody>
               </table>
@@ -28,18 +31,22 @@
       <div class="card-body">
           <h4 class="card-title">Médicos</h4>
           <h6 class="card-subtitle">Listado de médicos localizados</h6>
-          <div class="table-responsive">
+          <div *ngIf="!medicos.length" class="alert alert-info">
+            No existen hospitales relacionados con ese término
+          </div>
+          <div *ngIf="medicos.length" class="table-responsive">
               <table class="table">
                   <thead>
                       <tr>
-                          <th width="50">Avatar</th>
+                          <th width="50">Foto</th>
                           <th>Nombre</th>
                       </tr>
                   </thead>
                   <tbody>
-                      <tr>
-                          <td>Prohaska</td>
-                          <td>@Genelia</td>
+                      <tr *ngFor="let medico of medicos" class="animated fadeIn"
+                          style="cursor: pointer;" (click)="verMedico(medico)">
+                          <td><img [src]="medico.img | imagen:'medicos'" [alt]="medico.nombre" width="50"></td>
+                          <td>{{ medico.nombre }}</td>
                       </tr>
                   </tbody>
               </table>
@@ -52,18 +59,21 @@
       <div class="card-body">
           <h4 class="card-title">Hospitales</h4>
           <h6 class="card-subtitle">Listado de hospitales localizados</h6>
-          <div class="table-responsive">
+          <div *ngIf="!hospitales.length" class="alert alert-info">
+            No existen hospitales relacionados con ese término
+          </div>
+          <div *ngIf="hospitales.length" class="table-responsive">
               <table class="table">
                   <thead>
                       <tr>
-                          <th width="50">Avatar</th>
+                          <th width="50">Imagen</th>
                           <th>Nombre</th>
                       </tr>
                   </thead>
                   <tbody>
-                      <tr>
-                          <td>Prohaska</td>
-                          <td>@Genelia</td>
+                      <tr *ngFor="let hospital of hospitales" class="animated fadeIn">
+                        <td><img [src]="hospital.img | imagen:'hospitales'" [alt]="hospital.nombre" width="50"></td>
+                          <td>{{ hospital.nombre }}</td>
                       </tr>
                   </tbody>
               </table>

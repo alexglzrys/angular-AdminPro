@@ -55,4 +55,9 @@ export class BusquedaService {
       })
     )
   }
+
+  buscadorGeneral(termino: string): Observable<any> {
+    const URL = `${ BASE_URL }/todo/${ termino }`;
+    return this.http.get(URL, this.headers);
+  }
 }

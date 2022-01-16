@@ -17,6 +17,10 @@ export class ImagenPipe implements PipeTransform {
   transform(img: string | undefined, tipo: 'usuarios'|'medicos'|'hospitales'): string {
     // es necesario componer toda la ruta
     if (img) {
+      // rutas a avatars de redes sociales
+      if (img.includes('https')) {
+        return img;
+      }
       return `${ API_URL }/uploads/${tipo}/${img}`;
     } else {
       return `${ API_URL }/uploads/${tipo}/no-image.jpg`;
