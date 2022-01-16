@@ -36,6 +36,10 @@ export class UsuariosService {
     return localStorage.getItem('token') || '';
   }
 
+  get role(): 'USER_ROLE' | 'ADMIN_ROLE' {
+    return this.usuario.role!;
+  }
+
   get headers(): object {
     return {
       headers: {

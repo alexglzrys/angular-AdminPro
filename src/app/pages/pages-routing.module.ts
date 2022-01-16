@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AdminGuard } from '../guards/admin.guard';
 import { AuthGuard } from '../guards/auth.guard';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { BusquedaComponent } from './busqueda/busqueda.component';
@@ -34,12 +35,20 @@ const routes: Routes = [
       { path: 'rxjs', component: RxjsComponent, data: { title: 'RxJS' }  },
       { path: 'perfil', component: PerfilComponent, data: { title: 'Perfíl de Usuario' } },
       // Mantenimientos
-      { path: 'usuarios', component: UsuariosComponent, data: { title: 'Usuarios de aplicación' } },
+
       { path: 'hospitales', component: HospitalesComponent, data: { title: 'Hospitales de aplicación' } },
       { path: 'medicos', component: MedicosComponent, data: { title: 'Médicos de aplicación' } },
       { path: 'medico/:id', component: MedicoComponent, data: { title: 'Médico de aplicación' } },
       // Buscador general
-      { path: 'search/:termino', component: BusquedaComponent, data: { title: 'Búsqueda general de aplicación'} }
+      { path: 'search/:termino', component: BusquedaComponent, data: { title: 'Búsqueda general de aplicación'} },
+      // Rutas administrativas
+      {
+        path: 'usuarios',
+        canActivate: [AdminGuard],
+        canLoad: [AdminGuard],
+        component: UsuariosComponent,
+        data: { title: 'Usuarios de aplicación' }
+      }
     ]
   }
 ];
