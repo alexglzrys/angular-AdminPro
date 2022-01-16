@@ -20,6 +20,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
               private usuariosService: UsuariosService) { }
 
   ngOnInit(): void {
+    // Recuperar información del menu para este usuario logeado para pintarlo en el sidebar
     this.menuItems = this.sidebarService.menu;
     // Recuperar información del usuario logeado
     this.usuario = this.usuariosService.usuario;

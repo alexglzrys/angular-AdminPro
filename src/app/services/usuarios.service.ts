@@ -44,13 +44,19 @@ export class UsuariosService {
     }
   }
 
+  guardarLocalStorages(token: string, menu: any) {
+    localStorage.setItem('token', token);
+    localStorage.setItem('menu', JSON.stringify(menu)); // El menú es un arreglo
+  }
+
   registrarUsuario(formData: RegisterUserForm): Observable<any> {
     const URL = `${ BASE_URL }/usuarios`;
     return this.http.post(URL, formData).pipe(
       tap((res: any) => {
         // Efecto secundario, necesito guardar el token en LocalStorage si el registro es correcto
         // Si no viene la propiedad token, no se crea en localStorage
-        localStorage.setItem('token', res.token);
+        this.guardarLocalStorages(res.token, res.menu);
+
       })
       // Continuar con el flujo;
     );
@@ -104,7 +110,7 @@ export class UsuariosService {
       tap((res: any) => {
         // Efecto secundario, necesito guardar el token en LocalStorage si el login es correcto
         // Si no viene la propiedad token, no se crea en localStorage
-        localStorage.setItem('token', res.token);
+        this.guardarLocalStorages(res.token, res.menu);
       })
       // Continuar con el flujo
     );
@@ -127,7 +133,8 @@ export class UsuariosService {
       tap((res: any) => {
         // Efecto secundario
         // Guardar el posible token regenerado en localStorage
-        localStorage.setItem('token', res.newToken);
+        this.guardarLocalStorages(res.newToken, res.menu);
+
         // Crear una instancia del usuario logeado
         const { nombre, email, password, role, img, uid, google } = res.usuario;
         this.usuario = new Usuario(nombre, email, '', role, img, uid, google);
@@ -147,8 +154,9 @@ export class UsuariosService {
   }
 
   logout(): void {
-    // Borrar el token de localStorage
+    // Borrar el token y menú de localStorage
     localStorage.removeItem('token');
+    localStorage.removeItem('menu');
     // Cerrar sesión en Google Sign in
     this.auth2.signOut().then(() => {
       // En este punto necesitamos redireccionar.
